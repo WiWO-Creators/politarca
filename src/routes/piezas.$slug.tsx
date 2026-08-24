@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ArticleBody } from "@/components/article-body";
 import { ArticleChart } from "@/components/charts";
 import { ArticleGeo, EnBreve } from "@/components/geo-blocks";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -111,9 +112,25 @@ function ArticlePage() {
 
       <article className="article-prose page-wrap max-w-[680px] pb-16 pt-8">
         <EnBreve items={geo.tldr} />
-        {article.body.map((block, i) => (
-          <Block key={i} block={block} first={i === 0} />
-        ))}
+        {article.markdown ? (
+          <ArticleBody markdown={article.markdown} dropcap />
+        ) : (
+          (article.body ?? []).map((block, i) => (
+            <Block key={i} block={block} first={i === 0} />
+          ))
+        )}
+        {article.sources ? (
+          <aside className="my-12">
+            <p className="rubric mb-3">Fuentes</p>
+            <p className="font-body text-[0.95rem] leading-relaxed text-muted">{article.sources}</p>
+          </aside>
+        ) : null}
+        {article.editNote ? (
+          <aside className="mb-8">
+            <p className="rubric mb-3">Nota de edición</p>
+            <p className="font-body text-[0.95rem] leading-relaxed text-muted">{article.editNote}</p>
+          </aside>
+        ) : null}
         <ArticleGeo article={article} more={more} />
         <p className="mt-14 font-ui text-xs leading-relaxed text-subtle">
           Politarca es un medio liberal de centroderecha que reporta el poder en América Latina.
