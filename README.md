@@ -21,9 +21,10 @@ Node 22.
 
 ## Vercel
 
-1. Importar `WiWO-Creators/politarca`.
-2. Framework: Other / Vite. Build: `npm run build`. Node 22.
-3. Variables:
+Importar el repo: [vercel.com/new](https://vercel.com/new/clone?repository-url=https://github.com/WiWO-Creators/politarca)
+
+1. Framework: Other / Vite. Build: `npm run build`. Node 22.
+2. Variables:
 
 | Variable | Valor |
 |---|---|
