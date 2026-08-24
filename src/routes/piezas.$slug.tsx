@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/json-ld";
 import { StoryKicker, StoryTease } from "@/components/story-tease";
 import { getArticle, getSection, otherArticles, type ArticleBlock } from "@/lib/content";
 import { getGeo } from "@/lib/geo";
+import { PLATE_CREDIT } from "@/lib/plates";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/piezas/$slug")({
@@ -106,7 +107,7 @@ function ArticlePage() {
           decoding="async"
         />
         <figcaption className="mt-3 font-ui text-xs leading-relaxed text-subtle">
-          {geo.alt} {article.country} · {section.name} · {article.readMin} min de lectura
+          {PLATE_CREDIT[article.slug] ?? geo.alt} {article.country} · {section.name} · {article.readMin} min
         </figcaption>
       </figure>
 

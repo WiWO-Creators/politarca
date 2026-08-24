@@ -283,6 +283,7 @@
   aspect-ratio: 3 / 2;
   object-fit: cover;
   background: var(--color-surface);
+  filter: contrast(1.04);
 }
 
 .story-photo--tall {
