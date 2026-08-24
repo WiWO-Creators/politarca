@@ -161,13 +161,27 @@ export function SiteHeader() {
                   <button type="button" className="text-left hover:opacity-70" onClick={toggle}>
                     {theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
                   </button>
+                  <Link
+                    to="/balance"
+                    onClick={() => setOverlay(null)}
+                    className="text-left hover:opacity-70"
+                  >
+                    Balance de Poder
+                  </Link>
                   <button
                     type="button"
                     className="text-left hover:opacity-70"
                     onClick={() => setOverlay("subscribe")}
                   >
-                    La carta semanal
+                    El Despacho
                   </button>
+                  <Link
+                    to="/nosotros"
+                    onClick={() => setOverlay(null)}
+                    className="text-left hover:opacity-70"
+                  >
+                    Manifiesto
+                  </Link>
                 </div>
               </nav>
             ) : null}
@@ -190,7 +204,7 @@ export function SiteHeader() {
                     <li key={a.slug}>
                       <p className="rubric">{a.rubric}</p>
                       <Link
-                        to="/investigaciones/$slug"
+                        to="/piezas/$slug"
                         params={{ slug: a.slug }}
                         onClick={() => setOverlay(null)}
                         className="hed-mix hed-link mt-1 block"
@@ -209,12 +223,12 @@ export function SiteHeader() {
 
             {overlay === "subscribe" ? (
               <div className="mx-auto max-w-md text-center">
-                <p className="rubric">La carta semanal</p>
+                <p className="rubric">El Despacho</p>
                 <h2 className="mt-3 font-display text-3xl font-medium md:text-4xl">
-                  Lo que importa, una vez por semana.
+                  Tres veces por semana. Voz de la casa.
                 </h2>
                 <p className="dek mx-auto mt-4 max-w-sm">
-                  Investigaciones, una nota de gobernanza y una sola cosa que leer con calma.
+                  Tres temas, tres párrafos, una recomendación. Martes, jueves y sábado.
                 </p>
                 <SubscribeForm id="sub-email" />
               </div>

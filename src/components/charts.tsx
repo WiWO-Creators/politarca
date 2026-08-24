@@ -158,7 +158,7 @@ const META: Record<ChartId, { kicker: string; title: string; source: string }> =
   },
   hours: {
     kicker: "Gráfico",
-    title: "Horas anuales de cumplimiento · pyme mediana",
+    title: "Horas anuales de cumplimiento · pyme mediana formal",
     source: "Encuesta Politarca, n = 1.247. Margen de error ±2,8 %.",
   },
   emitters: {

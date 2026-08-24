@@ -31,7 +31,7 @@ export function StoryTease({
     <article className={cn("flex flex-col", isHero && "w-full")}>
       {isList ? null : (
         <Link
-          to="/investigaciones/$slug"
+          to="/piezas/$slug"
           params={{ slug: article.slug }}
           className="block"
           tabIndex={-1}
@@ -43,7 +43,7 @@ export function StoryTease({
         <p className={cn("rubric", isList ? "mt-0" : "mt-3")}>{article.rubric}</p>
         <Hed className={hedClass}>
           <Link
-            to="/investigaciones/$slug"
+            to="/piezas/$slug"
             params={{ slug: article.slug }}
             className="hed-link"
           >

@@ -1,9 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArticleChart } from "@/components/charts";
 import { StoryTease } from "@/components/story-tease";
-import { getArticle, otherArticles, type ArticleBlock } from "@/lib/content";
+import { getArticle, getSection, otherArticles, type ArticleBlock } from "@/lib/content";
 
-export const Route = createFileRoute("/investigaciones/$slug")({
+export const Route = createFileRoute("/piezas/$slug")({
   loader: ({ params }) => {
     const article = getArticle(params.slug);
     if (!article) throw notFound();
@@ -13,8 +13,8 @@ export const Route = createFileRoute("/investigaciones/$slug")({
     meta: [
       {
         title: loaderData
-          ? `${loaderData.article.title} — Politarca`
-          : "Investigación — Politarca",
+          ? `${loaderData.article.title} — el politarca`
+          : "Pieza — el politarca",
       },
     ],
   }),
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/investigaciones/$slug")({
     <main className="page-wrap py-24 text-center">
       <p className="rubric">Archivo</p>
       <h1 className="mt-3 font-display text-3xl">Pieza no encontrada</h1>
-      <Link to="/investigaciones" className="mt-6 inline-block font-body italic text-accent">
+      <Link to="/piezas" className="mt-6 inline-block font-body italic text-accent">
         Volver al archivo
       </Link>
     </main>
@@ -33,6 +33,7 @@ export const Route = createFileRoute("/investigaciones/$slug")({
 function ArticlePage() {
   const { article } = Route.useLoaderData();
   const more = otherArticles(article.slug).slice(0, 3);
+  const section = getSection(article.section);
 
   return (
     <main>
@@ -51,7 +52,7 @@ function ArticlePage() {
       <figure className="page-wrap max-w-[920px] py-2">
         <img src={article.image} alt="" className="story-photo story-photo--article" />
         <figcaption className="mt-3 font-ui text-xs leading-relaxed text-subtle">
-          {article.category} · {article.readMin} min de lectura
+          {section.name} · {article.readMin} min de lectura
         </figcaption>
       </figure>
 
@@ -60,10 +61,10 @@ function ArticlePage() {
           <Block key={i} block={block} first={i === 0} />
         ))}
         <p className="mt-14 font-ui text-xs leading-relaxed text-subtle">
-          Datasets y código de replicación disponibles en el Data Hub.
+          Conflictos de interés: la dirección de Politarca declara no tener relación comercial
+          con las instituciones cubiertas en esta pieza.
           <br />
-          Cita sugerida: {article.byline} ({article.date.slice(0, 4)}). “{article.title}”.
-          Politarca.
+          Cita: {article.byline} ({article.date.slice(0, 4)}). “{article.title}”. Politarca.
         </p>
       </article>
 

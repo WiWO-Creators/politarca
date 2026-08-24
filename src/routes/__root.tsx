@@ -17,7 +17,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Periodismo de datos e investigación sobre políticas públicas, gobernanza y regulación. Alta densidad estadística. Estándar neutral. Evidencia sobre el poder.",
+          "Quién manda, y qué queda. Medio liberal de centroderecha. Reporteo sobre el poder en América Latina.",
       },
       { name: "theme-color", content: "#ffffff" },
     ],

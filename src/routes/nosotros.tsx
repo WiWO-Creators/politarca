@@ -1,85 +1,89 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NewsletterBand } from "@/components/newsletter";
-import { STANDARDS } from "@/lib/content";
+import { STANDARDS, TAGLINE } from "@/lib/content";
 
 export const Route = createFileRoute("/nosotros")({
   component: Nosotros,
   head: () => ({
-    meta: [{ title: "Nosotros — Politarca" }],
+    meta: [{ title: "Manifiesto — el politarca" }],
   }),
 });
 
 function Nosotros() {
   return (
     <main>
-      <header className="page-wrap max-w-[760px] pt-8 md:pt-12">
+      <header className="page-wrap pb-8 pt-10 md:pt-14">
         <p className="rubric">Manifiesto</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
-          Evidencia sobre el poder.
+        <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
+          {TAGLINE}
         </h1>
-        <p className="dek mt-5 text-xl leading-snug">
-          Periodismo de datos e investigación. Políticas públicas, gobernanza y regulación.
+        <p className="dek mt-5 max-w-2xl text-xl">
+          Un medio liberal, de centroderecha, simpático con los mercados y las instituciones
+          y alérgico a los caudillos de cualquier signo.
         </p>
       </header>
 
-      <section className="page-wrap max-w-[680px] py-12">
-        <div className="space-y-5 font-body text-[1.125rem] leading-[1.65] text-fg">
-          <p>
-            Politarca es un medio de periodismo de datos e investigación centrado en políticas
-            públicas, gobernanza y regulación.
-          </p>
-          <p>
-            Operamos con un estándar neutral —liberal de derecha objetivo— y con alta densidad
-            estadística. Nuestra reputación se construye para resistir el escrutinio institucional:
-            cada cifra tiene fuente verificable, cada método es reproducible, cada conclusión está
-            abierta a refutación.
-          </p>
-          <p>
-            No producimos narrativa. Producimos evidencia. Existimos para que quienes diseñan
-            reglas, quienes las aplican y quienes las vigilan dispongan de un instrumento de alta
-            fidelidad.
-          </p>
-          <p>
-            Nuestra audiencia principal no es el público general. Son los que diseñan, ejecutan,
-            auditan o padecen las reglas: reguladores, legisladores, boards, estudios jurídicos,
-            think tanks, inversionistas institucionales y académicos.
-          </p>
-          <p>
-            Cada pieza que publicamos está construida para resistir el escrutinio de una consulta
-            formal. Los datasets son descargables. Las fuentes son citables. Las limitaciones
-            metodológicas se declaran.
-          </p>
-          <p>Politarca no vende indignación. Entrega evidencia.</p>
-        </div>
+      <section className="article-prose page-wrap max-w-[680px] space-y-5 pb-16 font-body text-lg leading-relaxed">
+        <p>
+          Politarca nace en el momento exacto en que la pregunta política de América Latina
+          cambió de signo. Durante quince años el debate fue si la derecha podía ganar. Hoy
+          gobierna Argentina, Chile, Colombia, Perú y Costa Rica, y Brasil vota el 4 de octubre.
+          La pregunta ya no es si gana: es qué hace con el poder, y si el liberalismo sobrevive
+          a su propia victoria.
+        </p>
+        <p>
+          Ese es el hueco. Hay medios que celebran a la derecha y medios que la denuncian. Casi
+          no hay uno que la edite: que le exija coherencia, rigor fiscal, respeto institucional
+          y estándar intelectual desde dentro de su propia tradición. Politarca es eso.
+        </p>
+        <p>
+          La derecha latinoamericana ganó el poder antes de ganar el argumento. Este medio existe
+          para cerrar esa brecha.
+        </p>
+        <p>
+          El liberalismo no es una facción. Es un estándar. Se aplica igual a Lula que a Milei, a
+          Petro que a Kast. Un medio que solo audita al adversario no es liberal: es prensa de
+          trinchera con mejor tipografía.
+        </p>
+        <p>
+          El problema latinoamericano no es el tamaño del Estado. Es su capacidad. Un Estado chico
+          que no cobra impuestos, no encarcela criminales y no construye infraestructura no es un
+          logro liberal. Es un fracaso. Esa distinción es la vetada intelectual más fértil de la
+          región.
+        </p>
+        <p>
+          La política se explica por gente, no por ideología. Se reportea a los subsecretarios, a
+          los operadores, a los ministros de Hacienda que nadie entrevista. La ideología llega
+          después, como interpretación de hechos verificados.
+        </p>
+        <p>
+          La ejecución imita al New Yorker más que al Wall Street Journal: pocas piezas, muy
+          trabajadas, con reporteo, personajes y escena. Se compite por profundidad, no por
+          velocidad. La opinión es el 30 %. El reporteo es el 70 %.
+        </p>
+        <p>
+          Se escribe siempre para el núcleo —quien decide el lunes—; la órbita lee por encima del
+          hombro. Nunca al revés.
+        </p>
+        <p>
+          El nombre tiene dos lecturas y conviene usar ambas: el arca, un depósito de la política
+          bien pensada, y el -arca de monarca y oligarca: quien manda. Un medio sobre quién manda,
+          y sobre lo que queda cuando pasa.
+        </p>
       </section>
 
       <section id="estandares" className="border-t border-border">
         <div className="page-wrap max-w-[680px] py-16">
-          <h2 className="font-display text-3xl font-medium tracking-[-0.02em]">Estándares editoriales</h2>
-          <ul className="mt-8 space-y-5">
-            {STANDARDS.map((s) => (
-              <li key={s} className="font-body text-[1.05rem] leading-relaxed text-fg">
-                {s}
+          <p className="rubric">La casa</p>
+          <h2 className="mt-3 font-display text-3xl">Diez reglas</h2>
+          <ol className="mt-8 space-y-4">
+            {STANDARDS.map((s, i) => (
+              <li key={s} className="flex gap-4 font-body text-base leading-relaxed text-muted">
+                <span className="font-display text-lg text-accent">{i + 1}.</span>
+                <span>{s}</span>
               </li>
             ))}
-          </ul>
-
-          <h3 className="mt-14 font-display text-2xl font-medium">Tono de voz</h3>
-          <p className="mt-4 font-body leading-relaxed text-fg">
-            Preferimos “el análisis muestra” a “es inaceptable”. Usamos números exactos y contexto
-            histórico o comparado. Oraciones densas pero legibles. Ironía seca permitida;
-            indignación moral, no.
-          </p>
-
-          <h3 className="mt-10 font-display text-2xl font-medium">Consultas institucionales</h3>
-          <p className="mt-4 font-body leading-relaxed text-fg">
-            Politarca está diseñado como fuente citable. Datasets, aclaraciones metodológicas o
-            briefings privados de alto nivel:{" "}
-            <a href="mailto:institutional@politarca.com" className="text-accent italic">
-              institutional@politarca.com
-            </a>
-            .
-          </p>
+          </ol>
         </div>
       </section>
 

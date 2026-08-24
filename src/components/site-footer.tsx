@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { SECTIONS, TAGLINE } from "@/lib/content";
 import { useTheme } from "./theme-provider";
 
 export function SiteFooter() {
@@ -11,8 +12,9 @@ export function SiteFooter() {
         <img
           src={logo}
           alt="el politarca"
-          className="masthead-logo masthead-logo--compact mb-12 md:mb-16"
+          className="masthead-logo masthead-logo--compact mb-6"
         />
+        <p className="mb-12 max-w-sm font-display text-xl italic text-fg md:mb-16">{TAGLINE}</p>
 
         <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
           <div>
@@ -20,53 +22,45 @@ export function SiteFooter() {
               Secciones
             </p>
             <ul className="space-y-2 font-ui text-sm text-fg">
-              <li>
-                <Link to="/investigaciones" className="hover:opacity-70">
-                  Investigaciones
-                </Link>
-              </li>
-              <li>
-                <Link to="/gobernanza" className="hover:opacity-70">
-                  Gobernanza
-                </Link>
-              </li>
-              <li>
-                <Link to="/datos" className="hover:opacity-70">
-                  Datos
-                </Link>
-              </li>
-              <li>
-                <Link to="/nosotros" className="hover:opacity-70">
-                  Nosotros
-                </Link>
-              </li>
+              {SECTIONS.map((s) => (
+                <li key={s.id}>
+                  <Link to={s.path} className="hover:opacity-70">
+                    {s.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <p className="mb-4 font-ui text-[0.7rem] font-medium uppercase tracking-[0.14em] text-subtle">
-              Archivo
+              Formatos
             </p>
             <ul className="space-y-2 font-ui text-sm text-fg">
               <li>
-                <Link to="/investigaciones" className="hover:opacity-70">
-                  El Lede
+                <Link to="/" hash="newsletter" className="hover:opacity-70">
+                  El Despacho
                 </Link>
               </li>
               <li>
-                <Link to="/gobernanza" className="hover:opacity-70">
-                  Informe
+                <Link to="/balance" className="hover:opacity-70">
+                  Balance de Poder
                 </Link>
               </li>
               <li>
-                <Link to="/datos" className="hover:opacity-70">
-                  Data Hub
+                <Link to="/agora" className="hover:opacity-70">
+                  El Contrapunto
+                </Link>
+              </li>
+              <li>
+                <Link to="/piezas" className="hover:opacity-70">
+                  El archivo
                 </Link>
               </li>
             </ul>
           </div>
           <div>
             <p className="mb-4 font-ui text-[0.7rem] font-medium uppercase tracking-[0.14em] text-subtle">
-              Estándares
+              La casa
             </p>
             <ul className="space-y-2 font-ui text-sm text-fg">
               <li>
@@ -76,12 +70,12 @@ export function SiteFooter() {
               </li>
               <li>
                 <Link to="/nosotros" hash="estandares" className="hover:opacity-70">
-                  Metodología
+                  Diez reglas
                 </Link>
               </li>
               <li>
                 <Link to="/nosotros" hash="estandares" className="hover:opacity-70">
-                  Correcciones
+                  Fe de erratas
                 </Link>
               </li>
             </ul>
@@ -108,7 +102,7 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="page-wrap flex flex-col gap-2 py-6 font-ui text-xs text-subtle sm:flex-row sm:justify-between">
           <span>© 2026 Politarca. Todos los derechos reservados.</span>
-          <span>Santiago, Chile</span>
+          <span>Cono Sur · Pan-regional</span>
         </div>
       </div>
     </footer>

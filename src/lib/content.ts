@@ -1,26 +1,26 @@
-export type Category =
-  | "Regulación"
-  | "Gobernanza"
-  | "Políticas públicas"
-  | "Análisis";
+export type SectionId =
+  | "polis"
+  | "erario"
+  | "frontera"
+  | "vida-comun"
+  | "agora"
+  | "biblioteca";
 
-export type IllustrationId =
-  | "layers"
-  | "network"
-  | "columns"
-  | "flow"
-  | "grid";
+export type FormatId =
+  | "pieza"
+  | "ficha"
+  | "contrapunto"
+  | "numeros"
+  | "carta"
+  | "entrevista"
+  | "archivo"
+  | "ensayo";
 
 export type ArticleBlock =
   | { type: "p"; text: string }
   | { type: "h2"; text: string }
   | { type: "pullquote"; text: string }
-  | {
-      type: "stat";
-      value: string;
-      caption: string;
-      source: string;
-    }
+  | { type: "stat"; value: string; caption: string; source: string }
   | { type: "chart"; id: "stock" | "hours" | "emitters" | "regions" }
   | { type: "methodology"; paragraphs: string[] };
 
@@ -28,66 +28,79 @@ export type Article = {
   slug: string;
   title: string;
   dek: string;
-  category: Category;
+  section: SectionId;
+  format: FormatId;
   rubric: string;
   date: string;
   dateLabel: string;
   readMin: number;
-  datasets: number;
   byline: string;
   excerpt: string;
-  illustration: IllustrationId;
   image: string;
   featured?: boolean;
   body: ArticleBlock[];
 };
 
-export const PULSE = [
+export type Section = {
+  id: SectionId;
+  path: "/polis" | "/erario" | "/frontera" | "/vida-comun" | "/agora" | "/biblioteca";
+  name: string;
+  kicker: string;
+  dek: string;
+};
+
+export const SECTIONS: Section[] = [
   {
-    label: "Stock normativo vigente",
-    value: "6.641",
-    delta: "+38 % desde 2014",
-    tone: "up" as const,
-    source: "Contraloría · Diario Oficial",
+    id: "polis",
+    path: "/polis",
+    name: "La Polis",
+    kicker: "El poder y sus instituciones",
+    dek: "Cómo se toman las decisiones: quién las toma, con qué información, bajo qué presión.",
   },
   {
-    label: "Horas anuales (pyme mediana)",
-    value: "312",
-    delta: "+67 % vs 2015",
-    tone: "up" as const,
-    source: "Encuesta propia · n = 1.247",
+    id: "erario",
+    path: "/erario",
+    name: "El Erario",
+    kicker: "La economía como decisión política",
+    dek: "Quién paga, quién recibe, quién decide y con qué costo político.",
   },
   {
-    label: "Costo estimado agregado",
-    value: "US$ 3,1 mil M",
-    delta: "≈ 1,4 % del PIB 2024",
-    tone: "neutral" as const,
-    source: "Metodología OECD adaptada",
+    id: "frontera",
+    path: "/frontera",
+    name: "Frontera",
+    kicker: "Latinoamérica en el mundo",
+    dek: "Geopolítica desde la región, no sobre la región.",
   },
   {
-    label: "Posición OCDE densidad",
-    value: "P72",
-    delta: "Percentil 72",
-    tone: "neutral" as const,
-    source: "Índice compuesto propio",
+    id: "vida-comun",
+    path: "/vida-comun",
+    name: "Vida común",
+    kicker: "Sociedad, costumbres, crónica",
+    dek: "Personas, lugares, una semana. Lo que convierte a un medio en revista.",
+  },
+  {
+    id: "agora",
+    path: "/agora",
+    name: "El Ágora",
+    kicker: "Debate, contrapunto, cartas",
+    dek: "El liberalismo como procedimiento, no como decorado.",
+  },
+  {
+    id: "biblioteca",
+    path: "/biblioteca",
+    name: "Biblioteca",
+    kicker: "Ideas, libros, historia intelectual",
+    dek: "Baja frecuencia, alto prestigio. Una idea, cuatro semanas.",
   },
 ];
 
+export const TAGLINE = "Quién manda, y qué queda.";
+
 export const STOCK_SERIES = [
   { year: 2010, stock: 3810, rate: 92 },
-  { year: 2011, stock: 3920, rate: 110 },
-  { year: 2012, stock: 4065, rate: 145 },
-  { year: 2013, stock: 4210, rate: 145 },
   { year: 2014, stock: 4340, rate: 130 },
-  { year: 2015, stock: 4488, rate: 148 },
-  { year: 2016, stock: 4610, rate: 122 },
-  { year: 2017, stock: 4745, rate: 135 },
   { year: 2018, stock: 5020, rate: 275 },
-  { year: 2019, stock: 5288, rate: 268 },
-  { year: 2020, stock: 5540, rate: 252 },
   { year: 2021, stock: 5895, rate: 355 },
-  { year: 2022, stock: 6180, rate: 285 },
-  { year: 2023, stock: 6390, rate: 210 },
   { year: 2024, stock: 6525, rate: 135 },
   { year: 2025, stock: 6641, rate: 116 },
 ];
@@ -116,416 +129,445 @@ export const REGION_SPEND = [
   { region: "Biobío", share: 10, electoral: 0.33 },
   { region: "Los Lagos", share: 8, electoral: 0.29 },
   { region: "Maule", share: 7, electoral: 0.38 },
-  { region: "Araucanía", share: 7, electoral: 0.44 },
-  { region: "O'Higgins", share: 6, electoral: 0.31 },
-  { region: "Antofagasta", share: 5, electoral: 0.22 },
-  { region: "Otras", share: 18, electoral: 0.27 },
-];
-
-export const DATASETS = [
-  {
-    id: "stock-normativo",
-    title: "Stock normativo 2010–2025",
-    rows: 192_440,
-    updated: "2026-08-12",
-    format: "CSV · Parquet",
-    note: "Catálogo consolidado Diario Oficial + Contraloría. Criterio de inclusión documentado.",
-  },
-  {
-    id: "carga-pyme",
-    title: "Horas de cumplimiento · muestra empresarial",
-    rows: 1_247,
-    updated: "2026-07-28",
-    format: "CSV · codebook",
-    note: "Encuesta estratificada por tamaño y sector. Microdatos anonimizados.",
-  },
-  {
-    id: "emision-organismos",
-    title: "Emisión neta por organismo",
-    rows: 31,
-    updated: "2026-08-12",
-    format: "CSV",
-    note: "Ponderado por alcance económico estimado de cada norma.",
-  },
-  {
-    id: "gasto-regional",
-    title: "Gasto discrecional gobiernos regionales",
-    rows: 16,
-    updated: "2026-06-02",
-    format: "CSV · XLSX",
-    note: "DIPRES + ejecución presupuestaria 2014–2025, deflactado.",
-  },
-  {
-    id: "lobby-registros",
-    title: "Audiencias Ley de Lobby 2014–2025",
-    rows: 84_102,
-    updated: "2026-05-19",
-    format: "CSV · JSON",
-    note: "Registro consolidado. Campos de sujeto pasivo, materia y recurrencia.",
-  },
-  {
-    id: "indice-densidad",
-    title: "Índice compuesto de densidad regulatoria",
-    rows: 38,
-    updated: "2026-08-01",
-    format: "CSV",
-    note: "OCDE PMR + Doing Business legacy + datos nacionales. Código de replicación.",
-  },
+  { region: "Otras", share: 36, electoral: 0.27 },
 ];
 
 export const ARTICLES: Article[] = [
   {
-    slug: "inflacion-regulatoria-chile-2014-2025",
-    title: "La inflación regulatoria de Chile, 2014-2025",
-    dek: "Entre 2014 y 2025 el stock de normas con impacto directo sobre la actividad empresarial creció un 38 %. El costo administrativo estimado equivale a 1,4 puntos del PIB. Reconstruimos los vectores, los organismos y los trade-offs reales.",
-    category: "Regulación",
-    rubric: "El Lede",
+    slug: "hacienda-dijo-no",
+    title: "Los 40 días en que Hacienda le dijo que no al Presidente",
+    dek: "Entre marzo y abril, tres decretos de gasto volvieron a La Moneda sin firma. Reconstruimos las reuniones, los números y el costo político de un ministerio que decidió ser el freno.",
+    section: "polis",
+    format: "pieza",
+    rubric: "La Polis",
     date: "2026-08-23",
     dateLabel: "23 de agosto de 2026",
-    readMin: 18,
-    datasets: 11,
-    byline: "Equipo de Datos de Politarca",
+    readMin: 16,
+    byline: "Redacción Politarca",
     excerpt:
-      "El stock de normas con impacto empresarial creció 38 por ciento en once años. El costo estimado equivale a 1,4 puntos del PIB.",
-    illustration: "layers",
-    image: "/photos/archive.jpg",
+      "Tres decretos volvieron sin firma. El ministerio de Hacienda eligió ser el freno. El Presidente, el costo.",
+    image: "/photos/congress-santiago.jpg",
     featured: true,
     body: [
       {
         type: "p",
-        text: "En diciembre de 2013 el inventario de decretos, resoluciones y circulares con efecto regulatorio sobre empresas superaba las 4.200 piezas vigentes, según el registro consolidado de la Contraloría General de la República y el Ministerio Secretaría General de la Presidencia. Once años después la cifra supera las 5.800. El crecimiento no fue lineal: el 62 por ciento del incremento neto se concentró entre 2018 y 2022.",
+        text: "El sobre llegó a las 19:40. No era un sobre: era un correo con tres archivos adjuntos y un renglón que el jefe de gabinete leyó dos veces. «Devuelto a firma de origen. Sin cobertura». En el piso de Teatinos nadie discutió el adjetivo. Discutieron el reloj. Faltaban once días para el primer Consejo de Gabinete en que el Presidente quería anunciar obra.",
       },
       {
         type: "p",
-        text: "Este trabajo no pregunta si la regulación es necesaria. Pregunta cuánto hay, quién la produce, a qué velocidad y a qué costo medible. La regulación es una tecnología de gobierno. Como toda tecnología, puede volverse obsoleta, redundante o excesivamente costosa respecto de los objetivos que declara perseguir.",
+        text: "José Antonio Kast asumió el 11 de marzo. La campaña había prometido velocidad. El Ministerio de Hacienda, en cambio, prometió aritmética. Durante cuarenta días esas dos promesas no cupieron en el mismo decreto.",
       },
       {
         type: "stat",
-        value: "+38 %",
-        caption:
-          "Crecimiento del stock de normas con impacto empresarial entre 2014 y 2025.",
-        source:
-          "Diario Oficial digitalizado · Contraloría. Criterio de inclusión: normas que imponen obligación, prohibición o requisito de información a sujetos privados.",
+        value: "3",
+        caption: "Decretos de gasto devueltos sin firma entre el 18 de marzo y el 27 de abril de 2026.",
+        source: "Registro de partidas y actas de comité de caja. Criterio: iniciativas con cargo a gasto corriente no contemplado en la Ley de Presupuestos 2026.",
       },
-      { type: "h2", text: "I. El stock y su aceleración" },
+      {
+        type: "h2",
+        text: "El freno no es una ideología. Es una planilla.",
+      },
       {
         type: "p",
-        text: "La aceleración se observa con claridad cuando se descompone la serie. Entre 2014 y 2017 el ritmo de creación neta se mantuvo cercano al promedio histórico de la década anterior. A partir de 2018 la tasa anual se elevó de forma sostenida. El peak se registró en 2021, coincidiendo con la respuesta regulatoria a la pandemia y con una serie de litigios que empujaron a varios organismos a emitir normas de “clarificación” o “precisión”.",
+        text: "La conversación que importa no ocurrió en cadena nacional. Ocurrió un martes, en una sala sin ventanas, con el director de Presupuestos y dos asesores que no aparecen en el organigrama público. Sobre la mesa: una ficha de una página. Arriba, el nombre del programa. Abajo, dos columnas. La de la izquierda decía «anuncio». La de la derecha, «caja». La diferencia era de 184 mil millones de pesos.",
       },
-      { type: "chart", id: "stock" },
       {
         type: "pullquote",
-        text: "La correlación entre cambio de gobierno y tasa de emisión es débil (r = 0,21). El driver dominante parece ser la respuesta a crisis mediáticas y a litigio estratégico más que a programas de gobierno explícitos.",
-      },
-      { type: "h2", text: "II. Los vectores de creación" },
-      {
-        type: "p",
-        text: "Tres organismos concentran el 51 por ciento de las nuevas normas de alto impacto: Ministerio de Salud (18 %), Superintendencia del Medio Ambiente (17 %) y Dirección del Trabajo (16 %). El resto se distribuye en un long-tail de 27 instituciones. La Superintendencia del Medio Ambiente y el Ministerio del Trabajo lideran el ranking de emisión neta cuando se pondera por el alcance económico estimado de cada norma.",
-      },
-      { type: "chart", id: "emitters" },
-      {
-        type: "p",
-        text: "El patrón no es ideológico en el sentido partidario. Es procedural. Los organismos que más emiten son también, de manera consistente, los que menos publican evaluaciones de impacto ex ante o ex post. La ausencia de un filtro sistemático de costo-beneficio convierte la emisión en el camino de menor resistencia institucional.",
-      },
-      {
-        type: "stat",
-        value: "51 %",
-        caption:
-          "De las nuevas normas de alto impacto se originan en solo tres organismos: Minsal, SMA y Dirección del Trabajo.",
-        source:
-          "Clasificación propia de “alto impacto” basada en número de sujetos obligados y sector de actividad.",
-      },
-      { type: "h2", text: "III. Costo de cumplimiento" },
-      {
-        type: "p",
-        text: "A partir de una encuesta estructurada aplicada a 1.247 empresas formales (diseño estratificado por tamaño y sector, margen de error ±2,8 %), el tiempo medio anual dedicado a cumplimiento regulatorio pasó de 187 horas en 2015 a 312 horas en 2024 para una pyme mediana. Valorado a costo de oportunidad del trabajo calificado —salarios medianos por categoría ocupacional según INE más overhead estimado—, el agregado nacional se sitúa en torno a los 3.100 millones de dólares, o aproximadamente 1,4 puntos del PIB de 2024.",
-      },
-      { type: "chart", id: "hours" },
-      {
-        type: "p",
-        text: "El 41 por ciento de ese costo se concentra en empresas de menos de 50 trabajadores. El efecto es regresivo: las firmas grandes internalizan la carga con departamentos legales y de compliance; las pequeñas la pagan en tiempo del dueño o del contador externo.",
-      },
-      { type: "h2", text: "IV. Comparación internacional" },
-      {
-        type: "p",
-        text: "Chile se ubica en el percentil 72 de densidad regulatoria entre economías de la OCDE cuando se ajusta por tamaño de economía y complejidad sectorial. El diferencial respecto a Nueva Zelanda o Dinamarca —países con niveles similares de protección ambiental y laboral— es especialmente marcado en la etapa de permisos previos. Solo Francia, Italia y Brasil muestran cargas comparables en el grupo de referencia.",
+        text: "Un Estado que no puede decir que no no es un Estado liberal. Es un Estado que firma y después improvisa.",
       },
       {
         type: "p",
-        text: "La evidencia comparada no sugiere que “menos regulación” sea automáticamente superior. Sugiere que el diseño actual genera costos fijos elevados que penalizan de forma desproporcionada a firmas pequeñas y a nuevos entrantes. Los países que han contenido la inflación regulatoria sin sacrificar estándares lo han hecho mediante reglas de “one-in, one-out”, sunsetting obligatorio y evaluaciones de impacto ex ante con umbrales cuantitativos vinculantes.",
-      },
-      { type: "h2", text: "V. Implicancias para el diseño regulatorio" },
-      {
-        type: "p",
-        text: "La regulación es una tecnología de gobierno. El dato no reemplaza el juicio político. Pero sin el dato, el juicio político opera a ciegas. Cualquier agenda de modernización del Estado que ignore el stock existente y la dinámica de creación de nuevas normas está incompleta.",
+        text: "El argumento de Hacienda no fue doctrinal. Fue de capacidad. Chile no tiene un problema de escasez de promesas. Tiene un problema de ejecución: programas que se anuncian, se presupuestan a medias y se diluyen en transferencias. El ministerio eligió pelear esa pelea en las primeras seis semanas, cuando el costo político de un «no» todavía se puede absorber. Más tarde, el «no» se vuelve crisis.",
       },
       {
         type: "p",
-        text: "Los hallazgos apuntan a tres fricciones institucionales concretas: (1) ausencia de un filtro de costo-beneficio con umbral cuantitativo; (2) ausencia de evaluación ex post sistemática; (3) incentivos asimétricos —el costo político de “no regular” ante una crisis mediática es inmediato; el costo de sobre-regular es difuso y diferido.",
+        text: "Fuentes de ambos pisos —nombradas en off, documentadas en on— coinciden en el método: cada iniciativa nueva debía traer fuente de financiamiento, no un deseo. Dos de los tres decretos reaparecieron en mayo con recorte. El tercero no reapareció.",
+      },
+      {
+        type: "h2",
+        text: "La prueba de la casa",
+      },
+      {
+        type: "p",
+        text: "La derecha latinoamericana ganó el poder antes de ganar el argumento. El argumento, en este caso, no es si el Estado debe ser chico. Es si el Estado puede decir que no a los propios. Un medio liberal que solo audita al adversario no es liberal. Este texto empieza por casa.",
       },
       {
         type: "methodology",
         paragraphs: [
-          "Fuentes primarias: catálogo de la Contraloría General de la República, Diario Oficial digitalizado 2014-2025, registros de la Superintendencia del Medio Ambiente, Dirección del Trabajo y Comisión para el Mercado Financiero.",
-          "Criterios de inclusión: normas con al menos un artículo que imponga obligación, prohibición o requisito de información a sujetos privados. Muestra empresarial: diseño estratificado, respuesta efectiva 41 %. Costeo: salarios medianos por categoría ocupacional según INE + overhead estimado. Margen de error del estimado de costo: ±18 %.",
-          "Limitaciones: no incluye costo de capital ni efectos dinámicos sobre inversión. Todos los microdatos anonimizados y el código de replicación están disponibles para descarga en el Data Hub.",
+          "Reconstrucción a partir de actas de comité de caja, partidas presupuestarias 2026 y entrevistas con seis funcionarios de Hacienda y La Moneda, tres de ellos autorizados a ser citados por cargo.",
+          "Los montos se expresan en pesos de 2026. No se atribuyen intenciones que las fuentes no sostengan.",
         ],
-      },
-      { type: "h2", text: "Conclusión" },
-      {
-        type: "p",
-        text: "La inflación regulatoria es un hecho medible. Su causa principal no parece ser ideológica sino procedural: ausencia de frenos institucionales a la emisión y ausencia de costo político por sobre-regulación. El stock creció. El costo se concentró. Los organismos que más emiten son los que menos evalúan.",
-      },
-      {
-        type: "p",
-        text: "El dato está. La decisión de qué hacer con él corresponde a quienes diseñan las reglas.",
       },
     ],
   },
   {
-    slug: "captura-organismos-tecnicos",
-    title: "Cómo se mide la captura en los organismos técnicos",
-    dek: "Un marco empírico para detectar sesgos sistemáticos en decisiones de superintendencias y comisiones. Evidencia de tres casos 2019-2025, sin acusar y sin eludir el patrón.",
-    category: "Gobernanza",
-    rubric: "Informe",
-    date: "2026-08-12",
-    dateLabel: "12 de agosto de 2026",
+    slug: "ajuste-argentino-2027",
+    title: "Los cuatro números que decidirán si el ajuste argentino sobrevive a 2027",
+    dek: "Tercer año de Milei. El laboratorio del ajuste entra en su fase política: salario real, recaudación, riesgo país y calendario electoral. Sin adjetivos.",
+    section: "erario",
+    format: "pieza",
+    rubric: "El Erario",
+    date: "2026-08-21",
+    dateLabel: "21 de agosto de 2026",
     readMin: 14,
-    datasets: 7,
-    byline: "Equipo de Gobernanza",
+    byline: "Equipo de El Erario",
     excerpt:
-      "Un marco empírico para detectar sesgos sistemáticos en superintendencias y comisiones. Tres casos, 2019-2025.",
-    illustration: "network",
+      "Salario real, recaudación, riesgo país y calendario. Cuatro números, una elección.",
     image: "/photos/office.jpg",
     body: [
       {
         type: "p",
-        text: "La captura regulatoria rara vez se presenta como un sobre. Se presenta como una distribución: decisiones que, a lo largo de cientos de resoluciones, se desvían de manera estadísticamente detectable hacia un subconjunto de sujetos regulados. Este trabajo propone un marco para medir esa desviación y lo aplica a tres organismos técnicos chilenos entre 2019 y 2025.",
-      },
-      {
-        type: "p",
-        text: "El marco no infiere intención. Infere patrón. Distinguir ambos es la diferencia entre un reportaje y una acusación.",
+        text: "En Buenos Aires se discute el relato. En las planillas se discute otra cosa. El gobierno de Javier Milei entra a su tercer año con el superávit como credencial y con 2027 como reloj. Lo que decide no es el aplauso de los mercados en 2024. Son cuatro series que, si se tuercen a la vez, no hay relato que las sostenga.",
       },
       {
         type: "stat",
-        value: "0,34",
-        caption:
-          "Índice de concentración de resultados favorables en el cuartil superior de sujetos recurrentes, caso A (2019-2025).",
-        source:
-          "Resoluciones publicadas · índice propio 0–1. Un valor de 0,25 sería uniforme.",
+        value: "4",
+        caption: "Variables de control: salario real, recaudación tributaria en términos constantes, riesgo país y fecha efectiva de la campaña presidencial.",
+        source: "INDEC, AFIP, EMBI. Series deflactadas.",
       },
-      { type: "h2", text: "Definición operativa" },
+      {
+        type: "h2",
+        text: "La honestidad brutal es la credencial",
+      },
       {
         type: "p",
-        text: "Definimos captura observable como persistencia, a lo largo de un panel de decisiones, de un residuo positivo y significativo a favor de un conjunto de sujetos después de controlar por tamaño, sector, historial de cumplimiento y complejidad del expediente. El residuo no “prueba” captura. La elimina como hipótesis nula de aleatoriedad.",
+        text: "Estabilizar una economía cuesta empleo, salario y elecciones. Un medio liberal que esconda esa cuenta no es liberal: es propaganda con gráfico. El ajuste argentino se sostiene si el salario real deja de ser la variable de ajuste y pasa a ser el dividendo. Todavía no lo es de forma inequívoca.",
+      },
+      {
+        type: "chart",
+        id: "hours",
+      },
+      {
+        type: "p",
+        text: "La recaudación —no el recorte del gasto— es el número que los ministros de Hacienda miran cuando cierran la puerta. Un superávit construido sobre una economía que no crece es un superávit de un año. El riesgo país, a su vez, no es un premio moral: es el precio de no poder mentir en dólares.",
       },
       {
         type: "pullquote",
-        text: "Si el residuo desaparece al introducir la variable de rotación de jefaturas, el patrón es institucional. Si persiste, es personal. En dos de tres casos, persistió.",
+        text: "El problema no es el tamaño del Estado. Es si cobra, si encarcela y si construye. Un Estado chico que no hace las tres no es un logro. Es un fallo.",
       },
-      { type: "h2", text: "Tres organismos, tres texturas" },
       {
         type: "p",
-        text: "El organismo A muestra concentración alta y estable. El B muestra concentración baja pero picos asociados a cambios de jefatura. El C no muestra residuo detectable una vez se controla por complejidad del expediente — un recordatorio útil: no todo organismo técnico está capturado, y afirmarlo sin el test es ruido.",
-      },
-      { type: "chart", id: "emitters" },
-      {
-        type: "p",
-        text: "La rotación de las jefaturas técnicas —medida como meses en el cargo— correlaciona inversamente con la magnitud del residuo (r = −0,48). El hallazgo es compatible con la literatura de captura por especialización: cuanto más larga la tenencia, más densa la red informal con el regulado.",
+        text: "El cuarto número no está en el INDEC. Está en el calendario. La campaña de 2027 empieza cuando el salario deje de ser una anécdota de asado. Si esa fecha llega antes de que las otras tres series giren, el laboratorio se convierte en una elección.",
       },
       {
         type: "methodology",
         paragraphs: [
-          "Universo: resoluciones con efecto individualizable publicadas entre 2019 y 2025 en tres organismos. Controles: tamaño (log empleo), sector CIIU, historial de sanciones, duración del expediente. Errores clusterizados a nivel de sujeto. Código y microdatos anonimizados en el Data Hub.",
-          "Limitación principal: no observamos lobby informal ni comunicaciones privadas. El residuo puede capturar calidad no medida del expediente. Por eso el marco se ofrece como instrumento, no como veredicto.",
+          "Series públicas de INDEC y AFIP. El gráfico de horas de cumplimiento se usa aquí como proxy de carga sobre formales — no como índice de pobreza. Limitación declarada.",
         ],
       },
     ],
   },
   {
-    slug: "gasto-discrecional-gobiernos-regionales",
-    title: "El mapa del gasto discrecional en los gobiernos regionales",
-    dek: "Dónde se decide realmente el dinero y qué correlaciones existen con ciclos electorales y redes de influencia local. Dieciséis regiones, doce años, un patrón incompleto.",
-    category: "Políticas públicas",
-    rubric: "Anales del gasto",
-    date: "2026-08-04",
-    dateLabel: "4 de agosto de 2026",
-    readMin: 16,
-    datasets: 14,
-    byline: "Equipo de Políticas Públicas",
-    excerpt:
-      "Dónde se decide el dinero discrecional y qué correlaciones deja el ciclo electoral.",
-    illustration: "flow",
-    image: "/photos/congress-santiago.jpg",
-    body: [
-      {
-        type: "p",
-        text: "El gasto de los gobiernos regionales tiene una parte rígida —salud, educación, arrastres— y una parte que se mueve. Esa segunda parte es el objeto de este trabajo. No porque sea la mayor, sino porque es donde el diseño institucional deja espacio al criterio, y el criterio deja espacio al ciclo.",
-      },
-      { type: "chart", id: "regions" },
-      {
-        type: "stat",
-        value: "+19 %",
-        caption:
-          "Incremento medio del gasto discrecional en el año previo a elección de gobernador, 2014-2025, deflactado.",
-        source:
-          "DIPRES · ejecución presupuestaria regional. Serie deflactada a pesos de 2024.",
-      },
-      {
-        type: "pullquote",
-        text: "El ciclo no aparece en todas las regiones. Aparece con más fuerza donde la competencia electoral es más estrecha y el padrón de proveedores es más concentrado.",
-      },
-      { type: "h2", text: "Concentración de proveedores" },
-      {
-        type: "p",
-        text: "En seis regiones, el 10 por ciento de los proveedores concentra más del 55 por ciento del gasto discrecional adjudicado. Esa concentración no es, por sí sola, irregularidad. Es un hecho de estructura. El hecho se vuelve relevante cuando se cruza con recurrencia electoral: los mismos nombres reaparecen en ventanas preelectorales con una frecuencia que el azar no replica.",
-      },
-      {
-        type: "p",
-        text: "El diseño actual de los gobiernos regionales —autonomía relativa, fiscalización desigual, reglas de compra heredadas— produce exactamente el tipo de opacidad de baja intensidad que sobrevive a las auditorías puntuales y se revela solo en series largas.",
-      },
-      {
-        type: "methodology",
-        paragraphs: [
-          "Fuentes: DIPRES, ChileCompra, SERVEL. Deflactor: IPC. “Discrecional” se define como subtítulos sin arrastre legal obligatorio ni transferencia condicionada. Código abierto en el Data Hub.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "tres-fallas-ley-lobby",
-    title: "Tres fallas de diseño en la Ley de Lobby y su costo real",
-    dek: "Diez años después: qué funciona, qué no, y cuánto cuesta la opacidad residual medida en decisiones sesgadas — no en adjetivos.",
-    category: "Regulación",
-    rubric: "Carta",
-    date: "2026-07-28",
-    dateLabel: "28 de julio de 2026",
+    slug: "puerto-chino-pacifico",
+    title: "El puerto chino que cambió el mapa del Pacífico sur",
+    dek: "Un muelle, un contrato y una contradicción: mercado abierto con un socio que no es liberal. Carta desde el litoral.",
+    section: "frontera",
+    format: "carta",
+    rubric: "Carta desde el Pacífico",
+    date: "2026-08-18",
+    dateLabel: "18 de agosto de 2026",
     readMin: 12,
-    datasets: 5,
-    byline: "Equipo de Regulación",
-    excerpt:
-      "Diez años después: qué funciona, qué no, y cuánto cuesta la opacidad residual.",
-    illustration: "grid",
-    image: "/photos/lawbooks.jpg",
+    byline: "Corresponsalía Politarca",
+    excerpt: "Un muelle, un contrato y la contradicción china del liberalismo latinoamericano.",
+    image: "/photos/archive.jpg",
     body: [
       {
         type: "p",
-        text: "La Ley de Lobby chilena resolvió un problema de visibilidad y dejó intactos tres de diseño. El registro existe. Las audiencias se publican. Lo que no se publica —y lo que el diseño no captura— es donde se concentra el costo.",
+        text: "El piloto de práctico señaló el horizonte como si fuera un documento. «Ahí», dijo. No había nada que un turista reconociera como poder. Había grúas, una concesión y un calendario de naves que ya no pasa por el mismo escritorio que hace diez años.",
       },
-      {
-        type: "stat",
-        value: "41 %",
-        caption:
-          "De las audiencias de sujetos pasivos de primer nivel omiten materia con suficiente granularidad para ser clasificadas.",
-        source: "Registro de Lobby 2014-2025 · n = 84.102 audiencias.",
-      },
-      { type: "h2", text: "Las tres fallas" },
       {
         type: "p",
-        text: "Primera: la definición de sujeto pasivo deja fuera a asesores de facto y a ventanillas técnicas donde se resuelve el detalle. Segunda: la materia se declara en campos abiertos, lo que produce un corpus ilegible para análisis sistemático. Tercera: no hay cruce obligatorio con el resultado de la decisión posterior — la audiencia queda como evento, no como input de un expediente.",
+        text: "Latinoamérica discute a China como ideología. El Pacífico sur la discute como logística. Puertos, litio, 5G, votos en la ONU. El liberalismo de la región tiene aquí su contradicción más fértil: quiere mercado abierto y un socio que no es liberal.",
       },
       {
         type: "pullquote",
-        text: "Un registro que no se puede cruzar con el output de la decisión es un archivo, no un instrumento de accountability.",
+        text: "La región no es un tablero. Es un sujeto que firma contratos y después finge que no los leyó.",
       },
       {
         type: "p",
-        text: "El costo no es el de las audiencias no registradas. Es el de las decisiones que el diseño no permite auditar. Medido como residuo inexplicado en un panel de resoluciones con y sin audiencia previa, el sesgo es pequeño en media y grande en la cola.",
+        text: "En Santiago, Lima y Canberra se habla de «diversificación». En el muelle se habla de calado, de tiempos de descarga y de quién asegura la grúa. La geopolítica que importa cabe en una hoja de flete.",
       },
       {
-        type: "methodology",
-        paragraphs: [
-          "Corpus: 84.102 audiencias 2014-2025. Clasificación de materia con modelo supervisado (F1 = 0,81 sobre muestra etiquetada). Cruce con resoluciones: matching probabilístico por fecha, organismo y sujeto. Limitación: matching imperfecto en un 14 % de casos.",
-        ],
+        type: "p",
+        text: "Esta carta no pide un embargo ni un abrazo. Pide un inventario: qué se concesionó, a quién, por cuántos años, y qué cláusula de salida existe cuando el socio deja de ser conveniente. Un Estado capaz lee el contrato. Un Estado vanidoso hace un discurso.",
       },
     ],
   },
   {
-    slug: "productividad-estado-2000-2025",
-    title: "Productividad del Estado: evidencia comparada 2000-2025",
-    dek: "Empleo público, producto y calidad de servicio no se mueven juntos. El desacople es el dato; la causa es una hipótesis que el diseño actual no permite cerrar.",
-    category: "Análisis",
-    rubric: "Ensayo",
-    date: "2026-07-09",
-    dateLabel: "9 de julio de 2026",
+    slug: "ultima-mina-carbon",
+    title: "La última mina de carbón de Chile cierra el viernes. Fuimos el jueves.",
+    dek: "Un pueblo, un turno de noche y el fin de una economía que el discurso climático ya había dado por muerta.",
+    section: "vida-comun",
+    format: "carta",
+    rubric: "Vida común",
+    date: "2026-08-16",
+    dateLabel: "16 de agosto de 2026",
     readMin: 15,
-    datasets: 9,
-    byline: "Equipo de Datos de Politarca",
-    excerpt:
-      "El empleo público creció más que la población. La calidad de servicio no acompañó.",
-    illustration: "columns",
-    image: "/photos/library.jpg",
-    body: [
-      {
-        type: "p",
-        text: "Entre 2000 y 2025 el empleo del gobierno general en Chile creció más rápido que la población y más rápido que el producto por ocupado del sector privado. La calidad percibida de servicios —medida por encuestas y por indicadores de tiempos de tramitación— no acompañó ese crecimiento de forma uniforme. El desacople es el hecho. Este ensayo lo documenta y se detiene antes de la moraleja.",
-      },
-      { type: "chart", id: "hours" },
-      {
-        type: "stat",
-        value: "+41 %",
-        caption:
-          "Crecimiento del empleo de gobierno general 2000-2025, versus +22 % de la población.",
-        source: "INE · DIPRES · OCDE Government at a Glance.",
-      },
-      {
-        type: "p",
-        text: "Comparado con el grupo de referencia OCDE, Chile no es un outlier de tamaño del Estado. Es un outlier de composición: alta densidad de empleo en funciones de control y baja densidad en funciones de ejecución de servicio. Esa composición predice exactamente el tipo de inflación regulatoria documentada en otra pieza de esta serie.",
-      },
-      {
-        type: "pullquote",
-        text: "Más Estado no es automáticamente más capacidad. A veces es más fricción con la misma capacidad.",
-      },
-      {
-        type: "methodology",
-        paragraphs: [
-          "Series: INE, DIPRES, OCDE, Banco Mundial. Empleo de gobierno general según SNA. Calidad: tiempos de tramitación (ChileAtiende / registros sectoriales) y satisfacción (CEP, encuestas de servicio). Limitación: la calidad de servicio no tiene un índice único comparable en todo el período.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "el-permiso-que-nunca-llega",
-    title: "El permiso que nunca llega",
-    dek: "Una ventanilla, trece oficinas y el tiempo como política pública no declarada.",
-    category: "Gobernanza",
-    rubric: "Crónica",
-    date: "2026-07-02",
-    dateLabel: "2 de julio de 2026",
-    readMin: 9,
-    datasets: 3,
-    byline: "Redacción Politarca",
-    excerpt:
-      "Una ventanilla, trece oficinas y el tiempo como política pública no declarada.",
-    illustration: "grid",
+    byline: "Crónica Politarca",
+    excerpt: "Un pueblo, un turno de noche y el cierre que el discurso ya había celebrado.",
     image: "/photos/desk.jpg",
     body: [
       {
         type: "p",
-        text: "El trámite no es el formulario. El trámite es la espera. Este texto sigue un permiso sectorial promedio a través de trece ventanillas y mide lo que el diseño institucional hace con el tiempo de quien pide autorización para producir.",
-      },
-      {
-        type: "stat",
-        value: "247 días",
-        caption: "Mediana de días hábiles entre ingreso y primer pronunciamiento, muestra 2023-2025.",
-        source: "Registros administrativos sectoriales · n = 4.102 expedientes.",
+        text: "El casco estaba rayado con un apellido. El hombre que lo llevaba no quería foto. Quería saber si «ustedes van a escribir que esto era inevitable». Era jueves. El viernes la mina cerraba. La pregunta no era geológica.",
       },
       {
         type: "p",
-        text: "No hay un villano. Hay una secuencia. Cada oficina cumple su mandato. El conjunto produce una política de racionamiento por demora que nadie votó y que pocos miden.",
+        text: "Chile se despidió del carbón en comunicados mucho antes de despedirse en el mesón. El comunicado es limpio. El mesón tiene termos, una radio y una lista de nombres que el mercado laboral de la región no va a absorber con un curso de recapacitación.",
       },
       {
-        type: "methodology",
-        paragraphs: [
-          "Expedientes con fecha de ingreso y primer acto resolutivo en cuatro servicios. Medianas, no medias. Los casos judiciales se excluyen.",
-        ],
+        type: "pullquote",
+        text: "La transición energética también es una política de clase. Se nota el jueves, no en la COP.",
+      },
+      {
+        type: "p",
+        text: "Esta crónica no milita el carbón ni su funeral. Se queda una noche, cuenta el turno y deja el adjetivo para el lector. Un medio de centroderecha que no puede mirar a un pueblo minero sin un slogan no merece la sección.",
+      },
+      {
+        type: "p",
+        text: "A las cinco de la mañana el último camión salió con menos prisa de la que el titular va a sugerir. Alguien dijo «igual venían avisando». Alguien más no dijo nada. Eso también es política.",
+      },
+    ],
+  },
+  {
+    slug: "contrapunto-ciclo-derecha",
+    title: "¿Es Brasil el fin del ciclo de derecha o su consagración?",
+    dek: "El 4 de octubre vota el país que ordena la región. Dos firmas, una pregunta, el mismo cierre.",
+    section: "agora",
+    format: "contrapunto",
+    rubric: "El Contrapunto",
+    date: "2026-08-14",
+    dateLabel: "14 de agosto de 2026",
+    readMin: 11,
+    byline: "El Ágora",
+    excerpt: "Dos firmas. Una pregunta. Brasil vota el 4 de octubre.",
+    image: "/photos/lawbooks.jpg",
+    body: [
+      {
+        type: "p",
+        text: "Brasil vota el 4 de octubre. Un eventual balotaje, el 25. Lula frente a Flávio Bolsonaro. El resto del continente finge que es una noticia extranjera. No lo es. Es el único evento del año que le importa a toda la región al mismo tiempo.",
+      },
+      {
+        type: "h2",
+        text: "A. El ciclo se cierra",
+      },
+      {
+        type: "p",
+        text: "La ola de derecha fue una corrección, no un régimen. Gobernó el enojo con la inflación, el crimen y la pedagogía moral de la izquierda. No gobernó una idea de Estado. Sin esa idea, el voto vuelve al que prometa alivio. Brasil, si reordena el mapa, no mata al liberalismo: revela que el liberalismo todavía no se presentó a la elección como programa, solo como humor.",
+      },
+      {
+        type: "h2",
+        text: "B. El ciclo se consagra",
+      },
+      {
+        type: "p",
+        text: "Al contrario: el dato no es Brasil. El dato es que Argentina, Chile, Colombia, Perú y Costa Rica ya cruzaron. Un país no deshace cinco. La pregunta liberal no es si la derecha «gana». Es qué hace con el poder cuando el adversario ya no es el pretexto. Si Brasil confirma la corrección, el pretexto se acaba.",
+      },
+      {
+        type: "pullquote",
+        text: "Se cita al adversario en su mejor versión. Si no se reconoce, está mal descrito.",
+      },
+      {
+        type: "p",
+        text: "Las dos firmas se publican juntas. Ninguna tiene la última palabra. El lector, sí.",
+      },
+    ],
+  },
+  {
+    slug: "alberdi-libertarios",
+    title: "Alberdi contra los libertarios",
+    dek: "El liberalismo latinoamericano tiene historia y casi nadie la cuenta. Una relectura de Bases para un gobierno que llegó antes que el argumento.",
+    section: "biblioteca",
+    format: "ensayo",
+    rubric: "El Ensayo",
+    date: "2026-08-09",
+    dateLabel: "9 de agosto de 2026",
+    readMin: 18,
+    byline: "Biblioteca Politarca",
+    excerpt: "El siglo XIX ya había escrito el manual. El siglo XXI lo cita mal.",
+    image: "/photos/library.jpg",
+    body: [
+      {
+        type: "p",
+        text: "Juan Bautista Alberdi no es un sticker. Es un abogado que escribió para un país que no existía todavía y que desconfiaba del caudillo con la misma energía con que desconfiaba del sermón. Leerlo hoy, en una región donde la derecha acaba de ganar, produce un efecto incómodo: el texto no aplaude. Exige.",
+      },
+      {
+        type: "p",
+        text: "Bases y puntos de partida para la organización política de la República Argentina no es un himno al mercado. Es un manual de instituciones: inmigración, educación, crédito, la Constitución como tecnología. El libertario de 2026 cita la libertad. Alberdi cita la administración.",
+      },
+      {
+        type: "pullquote",
+        text: "Gobernar no es un mood. Es una capacidad. Alberdi lo sabía; el sticker, no.",
+      },
+      {
+        type: "h2",
+        text: "La vetada intelectual",
+      },
+      {
+        type: "p",
+        text: "La distinción más fértil de la región —y la menos trabajada— es esta: el problema no es el tamaño del Estado, es su capacidad. Un Estado que no cobra, no encarcela y no construye no es un logro liberal. Alberdi habría reconocido el diagnóstico. Habría detestado el disfraz.",
+      },
+      {
+        type: "p",
+        text: "Este ensayo no pide una reliquia. Pide un estándar. El liberalismo no es una facción. Es una vara que se aplica a Milei y a Lula, a Kast y a Petro. Quien solo la aplique al adversario no está leyendo a Alberdi. Está buscando un santo.",
+      },
+      {
+        type: "p",
+        text: "Hay una línea de Lastarria a Vargas Llosa que el medio regional ha dejado en la estantería. Politarca la saca. No para venerarla. Para discutirla con dureza, que es la única forma liberal de tener padres.",
+      },
+    ],
+  },
+  {
+    slug: "ficha-nariño",
+    title: "El hombre que le escribe los decretos a De La Espriella",
+    dek: "No sale en la foto. Firma en el margen. La Ficha de la semana, desde Bogotá.",
+    section: "polis",
+    format: "ficha",
+    rubric: "La Ficha",
+    date: "2026-08-12",
+    dateLabel: "12 de agosto de 2026",
+    readMin: 8,
+    byline: "La Polis",
+    excerpt: "Cargo, trayectoria, quién le debe favores. El poder que no sale en la foto.",
+    image: "/photos/gavel.jpg",
+    body: [
+      {
+        type: "p",
+        text: "Abelardo De La Espriella asumió el 7 de agosto. En la foto del traspaso hay ministros. En el margen de los primeros decretos hay un nombre que el cable no cita. Esta ficha es ese margen.",
+      },
+      {
+        type: "p",
+        text: "No publicamos un perfil de celebridad. Publicamos un organigrama con sangre: de dónde viene, qué estudió, a quién asciende, quién le debe un favor y qué oficina realmente escribe el texto que el Presidente lee como propio.",
+      },
+      {
+        type: "stat",
+        value: "11",
+        caption: "Días entre la asunción y el primer paquete de decretos con su rúbrica de visto bueno interno.",
+        source: "Diario Oficial colombiano · organigrama de Presidencia.",
+      },
+      {
+        type: "p",
+        text: "La política se explica por gente, no por ideología. La ideología llega después, como interpretación de un memo. Si el medio cubre solo al que sale en la foto, está cubriendo teatro.",
+      },
+    ],
+  },
+  {
+    slug: "impuesto-clase-media",
+    title: "El impuesto que nadie discute y que paga toda la clase media",
+    dek: "No está en la ley de copete. Está en la tarifa, en el IVA y en el tiempo. Números que mandan.",
+    section: "erario",
+    format: "numeros",
+    rubric: "Números que mandan",
+    date: "2026-08-15",
+    dateLabel: "15 de agosto de 2026",
+    readMin: 6,
+    byline: "El Erario",
+    excerpt: "Una cifra, un gráfico, cuatrocientas palabras. El impuesto escondido.",
+    image: "/photos/contracts.jpg",
+    body: [
+      {
+        type: "p",
+        text: "La clase media latinoamericana no discute el impuesto a la renta con el fervor con que discute el precio del transporte. Debería. Una parte creciente de su carga no aparece como impuesto: aparece como tarifa, como IVA encadenado, como hora perdida en un trámite que el formal no puede evitar y el informal sí.",
+      },
+      {
+        type: "chart",
+        id: "hours",
+      },
+      {
+        type: "stat",
+        value: "312",
+        caption: "Horas anuales de cumplimiento para una pyme mediana formal, 2024. El informal no las paga: las transfiere.",
+        source: "Encuesta de carga · n = 1.247.",
+      },
+      {
+        type: "p",
+        text: "El sesgo liberal aquí no es un adjetivo. Es una cuenta: la formalidad es un impuesto a los que cumplen. Mientras el Estado sea incapaz de cobrarle al que no está, el que está paga dos veces. Eso no es izquierda ni derecha. Es un diseño.",
       },
     ],
   },
 ];
 
+export type PromiseStatus = "cumplida" | "tramite" | "pendiente" | "abandonada";
+
+export const TRACKER = [
+  {
+    country: "Chile",
+    leader: "José Antonio Kast",
+    since: "11 de marzo de 2026",
+    note: "Base de operaciones. El caso más observado de la región.",
+    items: [
+      { promise: "Disciplina fiscal en el primer año", status: "tramite" as PromiseStatus, update: "Hacienda devolvió tres decretos sin cobertura." },
+      { promise: "Agenda de seguridad con foco en crimen organizado", status: "tramite" as PromiseStatus, update: "Cartera nombrada; indicadores, pendientes de serie comparable." },
+      { promise: "Revisión de permisos sectoriales", status: "pendiente" as PromiseStatus, update: "Sin proyecto ingresado al Congreso al cierre de esta edición." },
+    ],
+  },
+  {
+    country: "Argentina",
+    leader: "Javier Milei",
+    since: "10 de diciembre de 2023",
+    note: "Tercer año. Laboratorio del ajuste. Presidenciales en 2027.",
+    items: [
+      { promise: "Equilibrio fiscal", status: "tramite" as PromiseStatus, update: "Superávit como credencial; sostenibilidad, en disputa." },
+      { promise: "Desinflación persistente", status: "tramite" as PromiseStatus, update: "La serie bajó; el salario real aún no es dividendo." },
+      { promise: "Reforma laboral amplia", status: "pendiente" as PromiseStatus, update: "El Congreso no entregó el paquete completo." },
+    ],
+  },
+  {
+    country: "Colombia",
+    leader: "Abelardo De La Espriella",
+    since: "7 de agosto de 2026",
+    note: "Gobierno nuevo: el mejor momento para instalar el tracker.",
+    items: [
+      { promise: "Orden en las rutas del crimen", status: "pendiente" as PromiseStatus, update: "Once días de gestión al cierre. Sin serie." },
+      { promise: "Regla fiscal explícita", status: "pendiente" as PromiseStatus, update: "Anuncio de campaña; no hay ley." },
+    ],
+  },
+  {
+    country: "Perú",
+    leader: "Keiko Fujimori",
+    since: "28 de julio de 2026",
+    note: "Margen mínimo en junio. Gobernabilidad frágil.",
+    items: [
+      { promise: "Estabilidad ministerial", status: "tramite" as PromiseStatus, update: "El margen electoral es el dato; el gabinete, la prueba." },
+      { promise: "Desbloqueo de inversión minera", status: "pendiente" as PromiseStatus, update: "Sin decreto marco publicado." },
+    ],
+  },
+  {
+    country: "Costa Rica",
+    leader: "Laura Fernández",
+    since: "8 de mayo de 2026",
+    note: "Contrapeso centroamericano. 48,53 % en primera vuelta.",
+    items: [
+      { promise: "Agenda de crecimiento sin aventura fiscal", status: "tramite" as PromiseStatus, update: "Primer presupuesto en discusión." },
+    ],
+  },
+];
+
+export const STANDARDS = [
+  "Ningún texto empieza con contexto. Empieza con una persona, una escena o un número que incomode.",
+  "Todo dato lleva fuente verificable. Si no se puede verificar, no se publica.",
+  "La opinión va después del reporteo, nunca en su lugar.",
+  "Se cita al adversario en su mejor versión.",
+  "Cero adjetivos ideológicos. Se describe la conducta y el lector califica.",
+  "Nombres propios siempre. Un texto solo con anónimos no se publica.",
+  "Los errores se corrigen arriba, no abajo. Nota fechada y firmada.",
+  "Conflictos de interés declarados en el pie de cada pieza.",
+  "Ni una sola pieza de portada escrita solo desde el escritorio.",
+  "Si el titular promete más que el texto, se cambia el titular.",
+];
+
+export const NAV = SECTIONS.map((s) => ({ to: s.path, label: s.name }));
+
+export function getSection(id: SectionId) {
+  return SECTIONS.find((s) => s.id === id)!;
+}
+
 export function getArticle(slug: string) {
   return ARTICLES.find((a) => a.slug === slug);
+}
+
+export function articlesBySection(id: SectionId) {
+  return ARTICLES.filter((a) => a.section === id);
 }
 
 export function featuredArticle() {
@@ -535,19 +577,3 @@ export function featuredArticle() {
 export function otherArticles(slug?: string) {
   return ARTICLES.filter((a) => a.slug !== slug);
 }
-
-export const STANDARDS = [
-  "Toda afirmación cuantitativa tiene fuente primaria o dataset propio.",
-  "Preferimos series largas y comparaciones internacionales sobre anécdotas.",
-  "Declaramos supuestos, márgenes de error y sesgos potenciales de los datos.",
-  "No publicamos opinión sin anclarla a evidencia empírica.",
-  "Las correcciones se publican de forma prominente y con fecha.",
-  "Financiamiento y posibles conflictos de interés se declaran.",
-];
-
-export const NAV = [
-  { to: "/investigaciones", label: "Investigaciones" },
-  { to: "/gobernanza", label: "Gobernanza" },
-  { to: "/datos", label: "Datos" },
-  { to: "/nosotros", label: "Nosotros" },
-] as const;

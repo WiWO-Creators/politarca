@@ -10,31 +10,46 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DatosRouteImport } from './routes/datos'
-import { Route as GobernanzaRouteImport } from './routes/gobernanza'
-import { Route as InvestigacionesRouteImport } from './routes/investigaciones'
+import { Route as AgoraRouteImport } from './routes/agora'
+import { Route as BalanceRouteImport } from './routes/balance'
+import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as ErarioRouteImport } from './routes/erario'
+import { Route as FronteraRouteImport } from './routes/frontera'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
-import { Route as InvestigacionesIndexRouteImport } from './routes/investigaciones.index'
-import { Route as InvestigacionesSlugRouteImport } from './routes/investigaciones.$slug'
+import { Route as PiezasRouteImport } from './routes/piezas'
+import { Route as PolisRouteImport } from './routes/polis'
+import { Route as VidaComunRouteImport } from './routes/vida-comun'
+import { Route as PiezasIndexRouteImport } from './routes/piezas.index'
+import { Route as PiezasSlugRouteImport } from './routes/piezas.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DatosRoute = DatosRouteImport.update({
-  id: '/datos',
-  path: '/datos',
+const AgoraRoute = AgoraRouteImport.update({
+  id: '/agora',
+  path: '/agora',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GobernanzaRoute = GobernanzaRouteImport.update({
-  id: '/gobernanza',
-  path: '/gobernanza',
+const BalanceRoute = BalanceRouteImport.update({
+  id: '/balance',
+  path: '/balance',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InvestigacionesRoute = InvestigacionesRouteImport.update({
-  id: '/investigaciones',
-  path: '/investigaciones',
+const BibliotecaRoute = BibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ErarioRoute = ErarioRouteImport.update({
+  id: '/erario',
+  path: '/erario',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FronteraRoute = FronteraRouteImport.update({
+  id: '/frontera',
+  path: '/frontera',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NosotrosRoute = NosotrosRouteImport.update({
@@ -42,79 +57,129 @@ const NosotrosRoute = NosotrosRouteImport.update({
   path: '/nosotros',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InvestigacionesIndexRoute = InvestigacionesIndexRouteImport.update({
+const PiezasRoute = PiezasRouteImport.update({
+  id: '/piezas',
+  path: '/piezas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PolisRoute = PolisRouteImport.update({
+  id: '/polis',
+  path: '/polis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VidaComunRoute = VidaComunRouteImport.update({
+  id: '/vida-comun',
+  path: '/vida-comun',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PiezasIndexRoute = PiezasIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => InvestigacionesRoute,
+  getParentRoute: () => PiezasRoute,
 } as any)
-const InvestigacionesSlugRoute = InvestigacionesSlugRouteImport.update({
+const PiezasSlugRoute = PiezasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
-  getParentRoute: () => InvestigacionesRoute,
+  getParentRoute: () => PiezasRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/datos': typeof DatosRoute
-  '/gobernanza': typeof GobernanzaRoute
-  '/investigaciones': typeof InvestigacionesRouteWithChildren
+  '/agora': typeof AgoraRoute
+  '/balance': typeof BalanceRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/erario': typeof ErarioRoute
+  '/frontera': typeof FronteraRoute
   '/nosotros': typeof NosotrosRoute
-  '/investigaciones/$slug': typeof InvestigacionesSlugRoute
-  '/investigaciones/': typeof InvestigacionesIndexRoute
+  '/piezas': typeof PiezasRouteWithChildren
+  '/polis': typeof PolisRoute
+  '/vida-comun': typeof VidaComunRoute
+  '/piezas/$slug': typeof PiezasSlugRoute
+  '/piezas/': typeof PiezasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/datos': typeof DatosRoute
-  '/gobernanza': typeof GobernanzaRoute
+  '/agora': typeof AgoraRoute
+  '/balance': typeof BalanceRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/erario': typeof ErarioRoute
+  '/frontera': typeof FronteraRoute
   '/nosotros': typeof NosotrosRoute
-  '/investigaciones/$slug': typeof InvestigacionesSlugRoute
-  '/investigaciones': typeof InvestigacionesIndexRoute
+  '/polis': typeof PolisRoute
+  '/vida-comun': typeof VidaComunRoute
+  '/piezas/$slug': typeof PiezasSlugRoute
+  '/piezas': typeof PiezasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/datos': typeof DatosRoute
-  '/gobernanza': typeof GobernanzaRoute
-  '/investigaciones': typeof InvestigacionesRouteWithChildren
+  '/agora': typeof AgoraRoute
+  '/balance': typeof BalanceRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/erario': typeof ErarioRoute
+  '/frontera': typeof FronteraRoute
   '/nosotros': typeof NosotrosRoute
-  '/investigaciones/$slug': typeof InvestigacionesSlugRoute
-  '/investigaciones/': typeof InvestigacionesIndexRoute
+  '/piezas': typeof PiezasRouteWithChildren
+  '/polis': typeof PolisRoute
+  '/vida-comun': typeof VidaComunRoute
+  '/piezas/$slug': typeof PiezasSlugRoute
+  '/piezas/': typeof PiezasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/datos'
-    | '/gobernanza'
-    | '/investigaciones'
+    | '/agora'
+    | '/balance'
+    | '/biblioteca'
+    | '/erario'
+    | '/frontera'
     | '/nosotros'
-    | '/investigaciones/$slug'
-    | '/investigaciones/'
+    | '/piezas'
+    | '/polis'
+    | '/vida-comun'
+    | '/piezas/$slug'
+    | '/piezas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/datos'
-    | '/gobernanza'
+    | '/agora'
+    | '/balance'
+    | '/biblioteca'
+    | '/erario'
+    | '/frontera'
     | '/nosotros'
-    | '/investigaciones/$slug'
-    | '/investigaciones'
+    | '/polis'
+    | '/vida-comun'
+    | '/piezas/$slug'
+    | '/piezas'
   id:
     | '__root__'
     | '/'
-    | '/datos'
-    | '/gobernanza'
-    | '/investigaciones'
+    | '/agora'
+    | '/balance'
+    | '/biblioteca'
+    | '/erario'
+    | '/frontera'
     | '/nosotros'
-    | '/investigaciones/$slug'
-    | '/investigaciones/'
+    | '/piezas'
+    | '/polis'
+    | '/vida-comun'
+    | '/piezas/$slug'
+    | '/piezas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DatosRoute: typeof DatosRoute
-  GobernanzaRoute: typeof GobernanzaRoute
-  InvestigacionesRoute: typeof InvestigacionesRouteWithChildren
+  AgoraRoute: typeof AgoraRoute
+  BalanceRoute: typeof BalanceRoute
+  BibliotecaRoute: typeof BibliotecaRoute
+  ErarioRoute: typeof ErarioRoute
+  FronteraRoute: typeof FronteraRoute
   NosotrosRoute: typeof NosotrosRoute
+  PiezasRoute: typeof PiezasRouteWithChildren
+  PolisRoute: typeof PolisRoute
+  VidaComunRoute: typeof VidaComunRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -126,25 +191,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/datos': {
-      id: '/datos'
-      path: '/datos'
-      fullPath: '/datos'
-      preLoaderRoute: typeof DatosRouteImport
+    '/agora': {
+      id: '/agora'
+      path: '/agora'
+      fullPath: '/agora'
+      preLoaderRoute: typeof AgoraRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gobernanza': {
-      id: '/gobernanza'
-      path: '/gobernanza'
-      fullPath: '/gobernanza'
-      preLoaderRoute: typeof GobernanzaRouteImport
+    '/balance': {
+      id: '/balance'
+      path: '/balance'
+      fullPath: '/balance'
+      preLoaderRoute: typeof BalanceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/investigaciones': {
-      id: '/investigaciones'
-      path: '/investigaciones'
-      fullPath: '/investigaciones'
-      preLoaderRoute: typeof InvestigacionesRouteImport
+    '/biblioteca': {
+      id: '/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/biblioteca'
+      preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/erario': {
+      id: '/erario'
+      path: '/erario'
+      fullPath: '/erario'
+      preLoaderRoute: typeof ErarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/frontera': {
+      id: '/frontera'
+      path: '/frontera'
+      fullPath: '/frontera'
+      preLoaderRoute: typeof FronteraRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nosotros': {
@@ -154,43 +233,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NosotrosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/investigaciones/': {
-      id: '/investigaciones/'
-      path: '/'
-      fullPath: '/investigaciones/'
-      preLoaderRoute: typeof InvestigacionesIndexRouteImport
-      parentRoute: typeof InvestigacionesRoute
+    '/piezas': {
+      id: '/piezas'
+      path: '/piezas'
+      fullPath: '/piezas'
+      preLoaderRoute: typeof PiezasRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/investigaciones/$slug': {
-      id: '/investigaciones/$slug'
+    '/polis': {
+      id: '/polis'
+      path: '/polis'
+      fullPath: '/polis'
+      preLoaderRoute: typeof PolisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vida-comun': {
+      id: '/vida-comun'
+      path: '/vida-comun'
+      fullPath: '/vida-comun'
+      preLoaderRoute: typeof VidaComunRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/piezas/': {
+      id: '/piezas/'
+      path: '/'
+      fullPath: '/piezas/'
+      preLoaderRoute: typeof PiezasIndexRouteImport
+      parentRoute: typeof PiezasRoute
+    }
+    '/piezas/$slug': {
+      id: '/piezas/$slug'
       path: '/$slug'
-      fullPath: '/investigaciones/$slug'
-      preLoaderRoute: typeof InvestigacionesSlugRouteImport
-      parentRoute: typeof InvestigacionesRoute
+      fullPath: '/piezas/$slug'
+      preLoaderRoute: typeof PiezasSlugRouteImport
+      parentRoute: typeof PiezasRoute
     }
   }
 }
 
-interface InvestigacionesRouteChildren {
-  InvestigacionesSlugRoute: typeof InvestigacionesSlugRoute
-  InvestigacionesIndexRoute: typeof InvestigacionesIndexRoute
+interface PiezasRouteChildren {
+  PiezasSlugRoute: typeof PiezasSlugRoute
+  PiezasIndexRoute: typeof PiezasIndexRoute
 }
 
-const InvestigacionesRouteChildren: InvestigacionesRouteChildren = {
-  InvestigacionesSlugRoute: InvestigacionesSlugRoute,
-  InvestigacionesIndexRoute: InvestigacionesIndexRoute,
+const PiezasRouteChildren: PiezasRouteChildren = {
+  PiezasSlugRoute: PiezasSlugRoute,
+  PiezasIndexRoute: PiezasIndexRoute,
 }
 
-const InvestigacionesRouteWithChildren = InvestigacionesRoute._addFileChildren(
-  InvestigacionesRouteChildren,
-)
+const PiezasRouteWithChildren =
+  PiezasRoute._addFileChildren(PiezasRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DatosRoute: DatosRoute,
-  GobernanzaRoute: GobernanzaRoute,
-  InvestigacionesRoute: InvestigacionesRouteWithChildren,
+  AgoraRoute: AgoraRoute,
+  BalanceRoute: BalanceRoute,
+  BibliotecaRoute: BibliotecaRoute,
+  ErarioRoute: ErarioRoute,
+  FronteraRoute: FronteraRoute,
   NosotrosRoute: NosotrosRoute,
+  PiezasRoute: PiezasRouteWithChildren,
+  PolisRoute: PolisRoute,
+  VidaComunRoute: VidaComunRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
