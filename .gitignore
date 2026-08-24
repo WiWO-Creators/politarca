@@ -1,0 +1,34 @@
+# dependencies
+node_modules
+.node_modules.lock
+
+# build
+dist
+.output
+.nitro
+.vercel
+.tanstack
+.wrangler
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+
+# sandbox (Grok Build) — no va a producción
+.grok
+AGENTS.md
+AGENTS.project.md
+startup.sh
+screenshots
+attachments
+artifacts
+
+# chrome de instalación de Grok (no es la marca)
+public/__grok
+
+# os / editor
+.DS_Store
+.idea
+.vscode
+*.log
