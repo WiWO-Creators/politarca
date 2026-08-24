@@ -15,16 +15,16 @@ export function SectionPage({ id }: { id: SectionId }) {
           { name: section.name },
         ]}
       />
-      <header className="page-wrap pb-10 pt-4 md:pb-14 md:pt-8">
+      <header className="page-wrap pb-8 pt-3 md:pb-14 md:pt-8">
         <p className="rubric">{section.name}</p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
+        <h1 className="mt-3 max-w-3xl font-display text-[1.75rem] font-semibold tracking-[-0.03em] md:text-5xl">
           {section.kicker}
         </h1>
-        <p className="dek mt-4 max-w-2xl text-lg">{section.dek}</p>
+        <p className="dek mt-4 max-w-2xl text-base md:text-lg">{section.dek}</p>
       </header>
 
       {hero ? (
-        <section className="page-wrap pb-12">
+        <section className="page-wrap pb-8 md:pb-12">
           <StoryTease article={hero} size={rest.length ? "lead" : "hero"} heading="h2" />
         </section>
       ) : (
@@ -32,7 +32,7 @@ export function SectionPage({ id }: { id: SectionId }) {
       )}
 
       {rest.length ? (
-        <section className="page-wrap grid gap-10 pb-20 sm:grid-cols-2">
+        <section className="page-wrap grid gap-8 pb-16 sm:grid-cols-2 md:gap-10 md:pb-20">
           {rest.map((a) => (
             <StoryTease key={a.slug} article={a} size="mix" />
           ))}

@@ -86,7 +86,7 @@ export function SiteFooter() {
             </p>
             <ul className="space-y-2 font-ui text-sm text-fg">
               <li>
-                <a href="mailto:consultas@politarca.com" className="hover:opacity-70">
+                <a href="mailto:consultas@politarca.com" className="break-all hover:opacity-70">
                   consultas@politarca.com
                 </a>
               </li>

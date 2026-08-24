@@ -79,21 +79,23 @@ function ArticlePage() {
           { name: "Inicio", to: "/" },
           { name: section.name, to: section.path },
           { name: article.country },
-          { name: article.rubric },
         ]}
       />
 
-      <header className="page-wrap max-w-[760px] pb-6 pt-2 md:pt-4">
+      <header className="page-wrap max-w-[760px] pb-5 pt-1 md:pb-6 md:pt-4">
         <StoryKicker article={article} />
-        <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.12] tracking-[-0.03em] text-fg md:text-[2.75rem]">
+        <h1 className="mt-3 font-display text-[1.7rem] font-semibold leading-[1.12] tracking-[-0.03em] text-fg md:text-[2.75rem]">
           {article.title}
         </h1>
-        <p className="dek mt-5 text-xl leading-snug md:text-[1.35rem]">{article.dek}</p>
-        <p className="byline mt-6">
+        <p className="dek mt-4 text-[1.05rem] leading-snug md:mt-5 md:text-[1.35rem]">{article.dek}</p>
+        <p className="byline mt-5 md:mt-6">
           Por {article.byline}
           <span className="not-italic text-subtle">
-            {" "}
-            · Publicado {article.dateLabel} · Actualizado {article.dateLabel}
+            <span className="md:hidden"> · {article.dateLabel} · {article.readMin} min</span>
+            <span className="hidden md:inline">
+              {" "}
+              · Publicado {article.dateLabel} · Actualizado {article.dateLabel}
+            </span>
           </span>
         </p>
       </header>
@@ -102,11 +104,11 @@ function ArticlePage() {
         <img
           src={article.image}
           alt={geo.alt}
-          className="story-photo story-photo--article"
+          className="story-photo story-photo--article bleed-photo"
           loading="eager"
           decoding="async"
         />
-        <figcaption className="mt-3 font-ui text-xs leading-relaxed text-subtle">
+        <figcaption className="mt-3 font-ui text-[0.7rem] leading-relaxed text-subtle md:text-xs">
           {PLATE_CREDIT[article.slug] ?? geo.alt} {article.country} · {section.name} · {article.readMin} min
         </figcaption>
       </figure>
@@ -146,8 +148,8 @@ function ArticlePage() {
       {more.length ? (
         <section className="border-t border-border">
           <div className="page-wrap py-14">
-            <h2 className="mix-title mb-10">Más de Politarca</h2>
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <h2 className="mix-title mb-8 md:mb-10">Más de Politarca</h2>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 md:gap-10">
               {more.map((a) => (
                 <StoryTease key={a.slug} article={a} size="mix" />
               ))}

@@ -57,7 +57,7 @@ export function StoryTease({
           <img
             src={article.image}
             alt={geo.alt}
-            className={photoClass}
+            className={cn(photoClass, isHero && "bleed-photo")}
             loading={isHero ? "eager" : "lazy"}
             decoding="async"
             fetchPriority={isHero ? "high" : "auto"}

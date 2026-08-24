@@ -5,11 +5,11 @@ import { getSection } from "@/lib/content";
 export function EnBreve({ items }: { items: string[] }) {
   if (!items.length) return null;
   return (
-    <aside className="mb-10 border-y border-border py-6">
+    <aside className="mb-8 border-y border-border py-5 md:mb-10 md:py-6">
       <p className="rubric mb-3">En breve</p>
       <ul className="space-y-2">
         {items.map((item) => (
-          <li key={item.slice(0, 48)} className="font-body text-[1.05rem] leading-snug text-fg">
+          <li key={item.slice(0, 48)} className="font-body text-[1rem] leading-snug text-fg md:text-[1.05rem]">
             {item.replace(/\s*\[VERIFICAR:[^\]]+\]/g, "")}
           </li>
         ))}

@@ -107,13 +107,21 @@
 
 .dropcap::first-letter {
   font-family: var(--font-display);
-  font-size: 4.6rem;
+  font-size: 3.4rem;
   float: left;
   line-height: 0.8;
-  padding-right: 0.5rem;
-  padding-top: 0.12rem;
+  padding-right: 0.45rem;
+  padding-top: 0.1rem;
   font-weight: 500;
   color: var(--color-fg);
+}
+
+@media (min-width: 768px) {
+  .dropcap::first-letter {
+    font-size: 4.6rem;
+    padding-right: 0.5rem;
+    padding-top: 0.12rem;
+  }
 }
 
 .article-prose p + p {
@@ -127,7 +135,7 @@
 .page-wrap {
   max-width: 1180px;
   margin-inline: auto;
-  padding-inline: 1.25rem;
+  padding-inline: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -138,13 +146,29 @@
 
 .masthead-logo {
   display: block;
-  width: min(70%, 17rem);
+  width: min(78%, 16rem);
   height: auto;
   margin-inline: auto;
 }
 
 .masthead-logo--compact {
-  width: min(48%, 13rem);
+  width: min(42%, 12rem);
+}
+
+.hed-hero {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-fg);
+}
+
+@media (min-width: 768px) {
+  .hed-hero {
+    font-size: 3.15rem;
+    line-height: 1.08;
+  }
 }
 
 .rubric {
@@ -160,25 +184,17 @@
 .place {
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   vertical-align: 0.12em;
 }
 
-.hed-hero {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  color: var(--color-fg);
-}
-
 @media (min-width: 768px) {
-  .hed-hero {
-    font-size: 3.15rem;
+  .place {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
   }
 }
 
@@ -236,10 +252,16 @@
 .mix-title {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.75rem;
+  font-size: 1.45rem;
   font-weight: 400;
   text-align: center;
   color: var(--color-fg);
+}
+
+@media (min-width: 768px) {
+  .mix-title {
+    font-size: 1.75rem;
+  }
 }
 
 .hed-link:hover {
@@ -252,8 +274,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.25rem;
-  padding: 0.35rem 1rem;
+  min-height: 2.75rem;
+  padding: 0.35rem 0.95rem;
   border-radius: 999px;
   background: var(--color-fg);
   color: var(--color-bg);
@@ -291,7 +313,101 @@
 }
 
 .story-photo--hero {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+  .story-photo--hero {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.story-photo--article {
+  aspect-ratio: 3 / 2;
+}
+
+.bleed-photo {
+  width: calc(100% + 2rem);
+  max-width: none;
+  margin-inline: -1rem;
+}
+
+@media (min-width: 768px) {
+  .bleed-photo {
+    width: 100%;
+    margin-inline: 0;
+  }
+}
+
+.nav-rail {
+  display: flex;
+  gap: 1.15rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-block: 0.7rem;
+}
+
+.nav-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-rail a {
+  flex: none;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  padding-block: 0.35rem;
+}
+
+.nav-rail a[data-active="true"] {
+  color: var(--color-accent);
+}
+
+.overlay-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  background: var(--color-bg);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  overscroll-behavior: contain;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding-top: env(safe-area-inset-top);
+}
+
+@media (min-width: 768px) {
+  .pill {
+    min-height: 2.25rem;
+  }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.article-prose table {
+  min-width: 28rem;
 }
 
 .dek-hero {

@@ -43,7 +43,7 @@ function Balance() {
       />
       <header className="page-wrap pb-10 pt-4 md:pt-8">
         <p className="rubric">La Polis</p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
+        <h1 className="mt-3 max-w-3xl font-display text-[1.75rem] font-semibold tracking-[-0.03em] md:text-5xl">
           Balance de Poder
         </h1>
         <p className="dek mt-4 max-w-2xl text-lg">
@@ -56,7 +56,7 @@ function Balance() {
       <section className="page-wrap space-y-14 pb-20">
         {TRACKER.map((g) => (
           <article key={g.country} className="border-t border-border pt-8">
-            <h2 className="font-display text-3xl font-semibold tracking-[-0.02em]">{g.country}</h2>
+            <h2 className="font-display text-[1.65rem] font-semibold tracking-[-0.02em] md:text-3xl">{g.country}</h2>
             <p className="dek mt-2">
               {g.leader} · desde {g.since}
             </p>

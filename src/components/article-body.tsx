@@ -73,7 +73,7 @@ function List({ block, ordered }: { block: string; ordered: boolean }) {
     .map((l) => l.replace(/^\s*(?:[-*]|\d+\.)\s+/, ""));
   const Tag = ordered ? "ol" : "ul";
   return (
-    <Tag className="my-6 space-y-2 pl-5 font-body text-[1.125rem] leading-[1.65] text-fg">
+    <Tag className="my-5 space-y-2 pl-5 font-body text-[1.05rem] leading-[1.6] text-fg md:my-6 md:text-[1.125rem] md:leading-[1.65]">
       {items.map((item) => (
         <li key={item.slice(0, 48)} className="pl-1">
           {inline(item)}
@@ -103,7 +103,7 @@ export function ArticleBody({ markdown, dropcap }: { markdown: string; dropcap?:
           return (
             <h2
               key={i}
-              className="mb-4 mt-12 font-display text-[1.65rem] font-semibold tracking-[-0.02em] text-fg"
+              className="mb-3 mt-9 font-display text-[1.35rem] font-semibold tracking-[-0.02em] text-fg md:mb-4 md:mt-12 md:text-[1.65rem]"
             >
               {inline(text)}
             </h2>
@@ -117,7 +117,7 @@ export function ArticleBody({ markdown, dropcap }: { markdown: string; dropcap?:
           return (
             <blockquote
               key={i}
-              className="my-12 font-display text-[1.45rem] font-medium italic leading-snug tracking-[-0.02em] text-fg md:text-[1.75rem]"
+              className="my-8 font-display text-[1.25rem] font-medium italic leading-snug tracking-[-0.02em] text-fg md:my-12 md:text-[1.75rem]"
             >
               {inline(text)}
             </blockquote>
@@ -133,8 +133,8 @@ export function ArticleBody({ markdown, dropcap }: { markdown: string; dropcap?:
             key={i}
             className={
               isFirst
-                ? "dropcap text-[1.125rem] leading-[1.65] text-fg"
-                : "text-[1.125rem] leading-[1.65] text-fg"
+                ? "dropcap text-[1.05rem] leading-[1.6] text-fg md:text-[1.125rem] md:leading-[1.65]"
+                : "text-[1.05rem] leading-[1.6] text-fg md:text-[1.125rem] md:leading-[1.65]"
             }
           >
             {inline(block.replace(/\n/g, " "))}

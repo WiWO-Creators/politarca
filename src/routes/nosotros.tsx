@@ -34,7 +34,7 @@ function Nosotros() {
 
       <header className="page-wrap pb-8 pt-4 md:pt-8">
         <p className="rubric">Manifiesto</p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
+        <h1 className="mt-3 max-w-3xl font-display text-[1.75rem] font-semibold tracking-[-0.03em] md:text-5xl">
           {TAGLINE}
         </h1>
         <p className="dek mt-5 max-w-2xl text-xl">
