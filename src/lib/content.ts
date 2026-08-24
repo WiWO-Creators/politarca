@@ -31,6 +31,7 @@ export type Article = {
   section: SectionId;
   format: FormatId;
   rubric: string;
+  country: string;
   date: string;
   dateLabel: string;
   readMin: number;
@@ -136,22 +137,23 @@ export const ARTICLES: Article[] = [
   {
     slug: "hacienda-dijo-no",
     title: "Los 40 días en que Hacienda le dijo que no al Presidente",
-    dek: "Entre marzo y abril, tres decretos de gasto volvieron a La Moneda sin firma. Reconstruimos las reuniones, los números y el costo político de un ministerio que decidió ser el freno.",
+    dek: "Chile. Entre marzo y abril, tres decretos de gasto volvieron a La Moneda sin firma. Reconstruimos las reuniones, los números y el costo político de un ministerio que decidió ser el freno.",
     section: "polis",
     format: "pieza",
     rubric: "La Polis",
+    country: "Chile",
     date: "2026-08-23",
     dateLabel: "23 de agosto de 2026",
     readMin: 16,
     byline: "Redacción Politarca",
     excerpt:
-      "Tres decretos volvieron sin firma. El ministerio de Hacienda eligió ser el freno. El Presidente, el costo.",
+      "Chile. Tres decretos volvieron sin firma. Hacienda eligió ser el freno. El Presidente, el costo.",
     image: "/photos/congress-santiago.jpg",
     featured: true,
     body: [
       {
         type: "p",
-        text: "El sobre llegó a las 19:40. No era un sobre: era un correo con tres archivos adjuntos y un renglón que el jefe de gabinete leyó dos veces. «Devuelto a firma de origen. Sin cobertura». En el piso de Teatinos nadie discutió el adjetivo. Discutieron el reloj. Faltaban once días para el primer Consejo de Gabinete en que el Presidente quería anunciar obra.",
+        text: "El sobre llegó a las 19:40 a un piso de Teatinos, en Santiago. No era un sobre: era un correo con tres archivos adjuntos y un renglón que el jefe de gabinete leyó dos veces. «Devuelto a firma de origen. Sin cobertura». En Chile nadie discutió el adjetivo. Discutieron el reloj. Faltaban once días para el primer Consejo de Gabinete en que el Presidente quería anunciar obra.",
       },
       {
         type: "p",
@@ -203,16 +205,17 @@ export const ARTICLES: Article[] = [
   {
     slug: "ajuste-argentino-2027",
     title: "Los cuatro números que decidirán si el ajuste argentino sobrevive a 2027",
-    dek: "Tercer año de Milei. El laboratorio del ajuste entra en su fase política: salario real, recaudación, riesgo país y calendario electoral. Sin adjetivos.",
+    dek: "Argentina. Tercer año de Milei. El laboratorio del ajuste entra en su fase política: salario real, recaudación, riesgo país y calendario electoral. Sin adjetivos.",
     section: "erario",
     format: "pieza",
     rubric: "El Erario",
+    country: "Argentina",
     date: "2026-08-21",
     dateLabel: "21 de agosto de 2026",
     readMin: 14,
     byline: "Equipo de El Erario",
     excerpt:
-      "Salario real, recaudación, riesgo país y calendario. Cuatro números, una elección.",
+      "Argentina. Salario real, recaudación, riesgo país y calendario. Cuatro números, una elección.",
     image: "/photos/office.jpg",
     body: [
       {
@@ -260,20 +263,21 @@ export const ARTICLES: Article[] = [
   {
     slug: "puerto-chino-pacifico",
     title: "El puerto chino que cambió el mapa del Pacífico sur",
-    dek: "Un muelle, un contrato y una contradicción: mercado abierto con un socio que no es liberal. Carta desde el litoral.",
+    dek: "Perú. Chancay, un contrato y una contradicción: mercado abierto con un socio que no es liberal. Carta desde el litoral.",
     section: "frontera",
     format: "carta",
     rubric: "Carta desde el Pacífico",
+    country: "Perú",
     date: "2026-08-18",
     dateLabel: "18 de agosto de 2026",
     readMin: 12,
     byline: "Corresponsalía Politarca",
-    excerpt: "Un muelle, un contrato y la contradicción china del liberalismo latinoamericano.",
+    excerpt: "Perú. Chancay, un contrato y la contradicción china del liberalismo latinoamericano.",
     image: "/photos/archive.jpg",
     body: [
       {
         type: "p",
-        text: "El piloto de práctico señaló el horizonte como si fuera un documento. «Ahí», dijo. No había nada que un turista reconociera como poder. Había grúas, una concesión y un calendario de naves que ya no pasa por el mismo escritorio que hace diez años.",
+        text: "En Chancay, al norte de Lima, el piloto de práctico señaló el horizonte como si fuera un documento. «Ahí», dijo. No había nada que un turista reconociera como poder. Había grúas, una concesión china y un calendario de naves que ya no pasa por el mismo escritorio que hace diez años.",
       },
       {
         type: "p",
@@ -296,15 +300,16 @@ export const ARTICLES: Article[] = [
   {
     slug: "ultima-mina-carbon",
     title: "La última mina de carbón de Chile cierra el viernes. Fuimos el jueves.",
-    dek: "Un pueblo, un turno de noche y el fin de una economía que el discurso climático ya había dado por muerta.",
+    dek: "Chile. Un pueblo, un turno de noche y el fin de una economía que el discurso climático ya había dado por muerta.",
     section: "vida-comun",
     format: "carta",
     rubric: "Vida común",
+    country: "Chile",
     date: "2026-08-16",
     dateLabel: "16 de agosto de 2026",
     readMin: 15,
     byline: "Crónica Politarca",
-    excerpt: "Un pueblo, un turno de noche y el cierre que el discurso ya había celebrado.",
+    excerpt: "Chile. Un pueblo, un turno de noche y el cierre que el discurso ya había celebrado.",
     image: "/photos/desk.jpg",
     body: [
       {
@@ -332,10 +337,11 @@ export const ARTICLES: Article[] = [
   {
     slug: "contrapunto-ciclo-derecha",
     title: "¿Es Brasil el fin del ciclo de derecha o su consagración?",
-    dek: "El 4 de octubre vota el país que ordena la región. Dos firmas, una pregunta, el mismo cierre.",
+    dek: "Brasil. El 4 de octubre vota el país que ordena la región. Dos firmas, una pregunta, el mismo cierre.",
     section: "agora",
     format: "contrapunto",
     rubric: "El Contrapunto",
+    country: "Brasil",
     date: "2026-08-14",
     dateLabel: "14 de agosto de 2026",
     readMin: 11,
@@ -376,20 +382,21 @@ export const ARTICLES: Article[] = [
   {
     slug: "alberdi-libertarios",
     title: "Alberdi contra los libertarios",
-    dek: "El liberalismo latinoamericano tiene historia y casi nadie la cuenta. Una relectura de Bases para un gobierno que llegó antes que el argumento.",
+    dek: "Argentina. El liberalismo latinoamericano tiene historia y casi nadie la cuenta. Una relectura de Bases para un gobierno que llegó antes que el argumento.",
     section: "biblioteca",
     format: "ensayo",
     rubric: "El Ensayo",
+    country: "Argentina",
     date: "2026-08-09",
     dateLabel: "9 de agosto de 2026",
     readMin: 18,
     byline: "Biblioteca Politarca",
-    excerpt: "El siglo XIX ya había escrito el manual. El siglo XXI lo cita mal.",
+    excerpt: "Argentina. El siglo XIX ya había escrito el manual. El siglo XXI lo cita mal.",
     image: "/photos/library.jpg",
     body: [
       {
         type: "p",
-        text: "Juan Bautista Alberdi no es un sticker. Es un abogado que escribió para un país que no existía todavía y que desconfiaba del caudillo con la misma energía con que desconfiaba del sermón. Leerlo hoy, en una región donde la derecha acaba de ganar, produce un efecto incómodo: el texto no aplaude. Exige.",
+        text: "Juan Bautista Alberdi no es un sticker. Es un abogado argentino que escribió para un país que no existía todavía y que desconfiaba del caudillo con la misma energía con que desconfiaba del sermón. Leerlo hoy, en una región donde la derecha acaba de ganar, produce un efecto incómodo: el texto no aplaude. Exige.",
       },
       {
         type: "p",
@@ -420,20 +427,21 @@ export const ARTICLES: Article[] = [
   {
     slug: "ficha-nariño",
     title: "El hombre que le escribe los decretos a De La Espriella",
-    dek: "No sale en la foto. Firma en el margen. La Ficha de la semana, desde Bogotá.",
+    dek: "Colombia. No sale en la foto. Firma en el margen. La Ficha de la semana, desde Bogotá.",
     section: "polis",
     format: "ficha",
     rubric: "La Ficha",
+    country: "Colombia",
     date: "2026-08-12",
     dateLabel: "12 de agosto de 2026",
     readMin: 8,
     byline: "La Polis",
-    excerpt: "Cargo, trayectoria, quién le debe favores. El poder que no sale en la foto.",
+    excerpt: "Colombia. Cargo, trayectoria, quién le debe favores. El poder que no sale en la foto.",
     image: "/photos/gavel.jpg",
     body: [
       {
         type: "p",
-        text: "Abelardo De La Espriella asumió el 7 de agosto. En la foto del traspaso hay ministros. En el margen de los primeros decretos hay un nombre que el cable no cita. Esta ficha es ese margen.",
+        text: "Abelardo De La Espriella asumió el 7 de agosto en Colombia. En la foto del traspaso, en Casa de Nariño, hay ministros. En el margen de los primeros decretos hay un nombre que el cable no cita. Esta ficha es ese margen.",
       },
       {
         type: "p",
@@ -454,20 +462,21 @@ export const ARTICLES: Article[] = [
   {
     slug: "impuesto-clase-media",
     title: "El impuesto que nadie discute y que paga toda la clase media",
-    dek: "No está en la ley de copete. Está en la tarifa, en el IVA y en el tiempo. Números que mandan.",
+    dek: "Chile. No está en la ley de copete. Está en la tarifa, en el IVA y en el tiempo. Números que mandan.",
     section: "erario",
     format: "numeros",
     rubric: "Números que mandan",
+    country: "Chile",
     date: "2026-08-15",
     dateLabel: "15 de agosto de 2026",
     readMin: 6,
     byline: "El Erario",
-    excerpt: "Una cifra, un gráfico, cuatrocientas palabras. El impuesto escondido.",
+    excerpt: "Chile. Una cifra, un gráfico, cuatrocientas palabras. El impuesto escondido.",
     image: "/photos/contracts.jpg",
     body: [
       {
         type: "p",
-        text: "La clase media latinoamericana no discute el impuesto a la renta con el fervor con que discute el precio del transporte. Debería. Una parte creciente de su carga no aparece como impuesto: aparece como tarifa, como IVA encadenado, como hora perdida en un trámite que el formal no puede evitar y el informal sí.",
+        text: "En Chile, la clase media no discute el impuesto a la renta con el fervor con que discute el precio del transporte. Debería. Una parte creciente de su carga no aparece como impuesto: aparece como tarifa, como IVA encadenado, como hora perdida en un trámite que el formal no puede evitar y el informal sí.",
       },
       {
         type: "chart",
@@ -560,6 +569,10 @@ export const NAV = SECTIONS.map((s) => ({ to: s.path, label: s.name }));
 
 export function getSection(id: SectionId) {
   return SECTIONS.find((s) => s.id === id)!;
+}
+
+export function storyKicker(article: Article) {
+  return `${article.country} · ${article.rubric}`;
 }
 
 export function getArticle(slug: string) {

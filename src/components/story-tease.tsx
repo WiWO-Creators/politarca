@@ -4,6 +4,22 @@ import { cn } from "@/lib/utils";
 
 type Size = "hero" | "lead" | "mix" | "list";
 
+export function StoryKicker({
+  article,
+  className,
+}: {
+  article: Article;
+  className?: string;
+}) {
+  return (
+    <p className={cn("rubric", className)}>
+      <span className="place">{article.country}</span>
+      {" · "}
+      {article.rubric}
+    </p>
+  );
+}
+
 export function StoryTease({
   article,
   size = "mix",
@@ -40,7 +56,7 @@ export function StoryTease({
         </Link>
       )}
       <div className={cn(isHero && "max-w-3xl")}>
-        <p className={cn("rubric", isList ? "mt-0" : "mt-3")}>{article.rubric}</p>
+        <StoryKicker article={article} className={isList ? "mt-0" : "mt-3"} />
         <Hed className={hedClass}>
           <Link
             to="/piezas/$slug"

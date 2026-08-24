@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArticleChart } from "@/components/charts";
-import { StoryTease } from "@/components/story-tease";
+import { StoryKicker, StoryTease } from "@/components/story-tease";
 import { getArticle, getSection, otherArticles, type ArticleBlock } from "@/lib/content";
 
 export const Route = createFileRoute("/piezas/$slug")({
@@ -38,7 +38,7 @@ function ArticlePage() {
   return (
     <main>
       <header className="page-wrap max-w-[760px] pb-6 pt-4 md:pt-8">
-        <p className="rubric">{article.rubric}</p>
+        <StoryKicker article={article} />
         <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.12] tracking-[-0.03em] text-fg md:text-[2.75rem]">
           {article.title}
         </h1>
@@ -52,7 +52,7 @@ function ArticlePage() {
       <figure className="page-wrap max-w-[920px] py-2">
         <img src={article.image} alt="" className="story-photo story-photo--article" />
         <figcaption className="mt-3 font-ui text-xs leading-relaxed text-subtle">
-          {section.name} · {article.readMin} min de lectura
+          {article.country} · {section.name} · {article.readMin} min de lectura
         </figcaption>
       </figure>
 

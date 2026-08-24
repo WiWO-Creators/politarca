@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ARTICLES, NAV } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { SubscribeForm } from "./subscribe-form";
+import { StoryKicker } from "./story-tease";
 import { useTheme } from "./theme-provider";
 
 type Overlay = "menu" | "search" | "subscribe" | null;
@@ -52,6 +53,7 @@ export function SiteHeader() {
         return (
           a.title.toLowerCase().includes(q) ||
           a.dek.toLowerCase().includes(q) ||
+          a.country.toLowerCase().includes(q) ||
           a.rubric.toLowerCase().includes(q) ||
           a.byline.toLowerCase().includes(q)
         );
@@ -202,7 +204,7 @@ export function SiteHeader() {
                 <ul className="mt-8 flex flex-col gap-8">
                   {hits.map((a) => (
                     <li key={a.slug}>
-                      <p className="rubric">{a.rubric}</p>
+                      <StoryKicker article={a} />
                       <Link
                         to="/piezas/$slug"
                         params={{ slug: a.slug }}
