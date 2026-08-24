@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionPage } from "@/components/section-page";
+import { sectionHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/vida-comun")({
   component: () => <SectionPage id="vida-comun" />,
-  head: () => ({ meta: [{ title: "Vida común — el politarca" }] }),
+  head: () => sectionHead("vida-comun"),
 });

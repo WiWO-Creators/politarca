@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StoryTease } from "@/components/story-tease";
 import { articlesBySection, getSection, type SectionId } from "@/lib/content";
 
@@ -8,7 +9,13 @@ export function SectionPage({ id }: { id: SectionId }) {
 
   return (
     <main>
-      <header className="page-wrap pb-10 pt-8 md:pb-14 md:pt-12">
+      <Breadcrumbs
+        items={[
+          { name: "Inicio", to: "/" },
+          { name: section.name },
+        ]}
+      />
+      <header className="page-wrap pb-10 pt-4 md:pb-14 md:pt-8">
         <p className="rubric">{section.name}</p>
         <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
           {section.kicker}

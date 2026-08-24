@@ -1,11 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { JsonLd } from "@/components/json-ld";
 import { TRACKER, type PromiseStatus } from "@/lib/content";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/balance")({
   component: Balance,
-  head: () => ({
-    meta: [{ title: "Balance de Poder — el politarca" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Balance de Poder: promesas de cinco gobiernos | Politarca",
+      description:
+        "Tracker de promesas en Argentina, Chile, Colombia, Perú y Costa Rica. Cumplida, en trámite, pendiente o abandonada. Actualizado agosto 2026.",
+      path: "/balance",
+      ogTitle: "Balance de Poder: cinco gobiernos, una vara",
+      ogDescription: "Qué prometieron Kast, Milei, De La Espriella, Fujimori y Fernández. Qué cumplieron.",
+    }),
 });
 
 const LABEL: Record<PromiseStatus, string> = {
@@ -18,7 +27,21 @@ const LABEL: Record<PromiseStatus, string> = {
 function Balance() {
   return (
     <main>
-      <header className="page-wrap pb-10 pt-10 md:pt-14">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "La Polis", path: "/polis" },
+          { name: "Balance de Poder", path: "/balance" },
+        ])}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Inicio", to: "/" },
+          { name: "La Polis", to: "/polis" },
+          { name: "Balance de Poder" },
+        ]}
+      />
+      <header className="page-wrap pb-10 pt-4 md:pt-8">
         <p className="rubric">La Polis</p>
         <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-[-0.03em] md:text-5xl">
           Balance de Poder

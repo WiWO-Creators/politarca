@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { Article } from "@/lib/content";
+import { getGeo } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 
 type Size = "hero" | "lead" | "mix" | "list";
@@ -34,6 +35,7 @@ export function StoryTease({
   const isLead = size === "lead";
   const isList = size === "list";
 
+  const geo = getGeo(article);
   const photoClass = isHero
     ? "story-photo story-photo--hero"
     : isLead
@@ -52,7 +54,14 @@ export function StoryTease({
           className="block"
           tabIndex={-1}
         >
-          <img src={article.image} alt="" className={photoClass} />
+          <img
+            src={article.image}
+            alt={geo.alt}
+            className={photoClass}
+            loading={isHero ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={isHero ? "high" : "auto"}
+          />
         </Link>
       )}
       <div className={cn(isHero && "max-w-3xl")}>

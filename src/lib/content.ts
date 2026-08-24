@@ -187,7 +187,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "h2",
-        text: "La prueba de la casa",
+        text: "¿Puede un gobierno de derecha en Chile decir que no a los propios?",
       },
       {
         type: "p",
@@ -230,7 +230,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "h2",
-        text: "La honestidad brutal es la credencial",
+        text: "¿Qué números deciden si el ajuste argentino llega a 2027?",
       },
       {
         type: "p",

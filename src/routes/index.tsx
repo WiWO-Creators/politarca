@@ -1,9 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { FaqBlock } from "@/components/geo-blocks";
+import { JsonLd } from "@/components/json-ld";
 import { NewsletterBand } from "@/components/newsletter";
 import { StoryTease } from "@/components/story-tease";
 import { ARTICLES } from "@/lib/content";
+import { HOME_FAQS } from "@/lib/geo";
+import { faqJsonLd, orgJsonLd, pageHead, websiteJsonLd } from "@/lib/seo";
 
-export const Route = createFileRoute("/")({ component: Home });
+export const Route = createFileRoute("/")({
+  component: Home,
+  head: () =>
+    pageHead({
+      title: "Politarca — periodismo liberal en América Latina",
+      description:
+        "Medio liberal de centroderecha. Reporteo sobre quién manda en América Latina y qué queda. Chile, Argentina, Brasil, Colombia, Perú.",
+      path: "/",
+      ogTitle: "Quién manda, y qué queda",
+      ogDescription: "Periodismo liberal de centroderecha sobre el poder en América Latina.",
+    }),
+});
 
 function Home() {
   const [hero, ...rest] = ARTICLES;
@@ -12,6 +27,10 @@ function Home() {
 
   return (
     <main>
+      <JsonLd data={orgJsonLd()} />
+      <JsonLd data={websiteJsonLd()} />
+      <JsonLd data={faqJsonLd(HOME_FAQS)} />
+
       <section className="page-wrap pb-10 pt-1 md:pb-14">
         <StoryTease article={hero} size="hero" heading="h1" />
       </section>
@@ -31,6 +50,10 @@ function Home() {
             <StoryTease key={a.slug} article={a} size="mix" />
           ))}
         </div>
+      </section>
+
+      <section className="page-wrap max-w-[680px] pb-16">
+        <FaqBlock faqs={HOME_FAQS} />
       </section>
 
       <NewsletterBand />

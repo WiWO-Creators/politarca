@@ -4,22 +4,24 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SITE, abs } from "@/lib/seo";
 import appCss from "../styles.css?url";
-
-const APP_NAME = "el politarca";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: APP_NAME },
-      {
-        name: "description",
-        content:
-          "Quién manda, y qué queda. Medio liberal de centroderecha. Reporteo sobre el poder en América Latina.",
-      },
+      { title: SITE.name },
+      { name: "description", content: SITE.description },
       { name: "theme-color", content: "#ffffff" },
+      { name: "color-scheme", content: "light dark" },
+      { property: "og:site_name", content: SITE.brand },
+      { property: "og:locale", content: SITE.locale },
+      { property: "og:image", content: abs(SITE.ogImage) },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
@@ -32,6 +34,7 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
+      { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
     ],
   }),
   component: RootDocument,

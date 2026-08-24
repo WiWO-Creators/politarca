@@ -1,7 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArticleChart } from "@/components/charts";
+import { ArticleGeo, EnBreve } from "@/components/geo-blocks";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { JsonLd } from "@/components/json-ld";
 import { StoryKicker, StoryTease } from "@/components/story-tease";
 import { getArticle, getSection, otherArticles, type ArticleBlock } from "@/lib/content";
+import { getGeo } from "@/lib/geo";
+import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/piezas/$slug")({
   loader: ({ params }) => {
@@ -9,15 +14,25 @@ export const Route = createFileRoute("/piezas/$slug")({
     if (!article) throw notFound();
     return { article };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData
-          ? `${loaderData.article.title} — el politarca`
-          : "Pieza — el politarca",
-      },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return { meta: [{ title: "Pieza — el politarca" }] };
+    const { article } = loaderData;
+    const geo = getGeo(article);
+    const section = getSection(article.section);
+    return pageHead({
+      title: `${article.title} | Politarca`,
+      description: `${article.country}. ${article.dek}`,
+      path: `/piezas/${article.slug}`,
+      image: article.image,
+      type: "article",
+      published: article.date,
+      modified: article.date,
+      section: section.name,
+      tags: geo.tags,
+      ogTitle: geo.ogTitle,
+      ogDescription: geo.ogDescription,
+    });
+  },
   component: ArticlePage,
   notFoundComponent: () => (
     <main className="page-wrap py-24 text-center">
@@ -34,10 +49,39 @@ function ArticlePage() {
   const { article } = Route.useLoaderData();
   const more = otherArticles(article.slug).slice(0, 3);
   const section = getSection(article.section);
+  const geo = getGeo(article);
+  const crumbs = [
+    { name: "Inicio", path: "/" },
+    { name: section.name, path: section.path },
+    { name: article.country, path: section.path },
+    { name: article.title, path: `/piezas/${article.slug}` },
+  ];
 
   return (
     <main>
-      <header className="page-wrap max-w-[760px] pb-6 pt-4 md:pt-8">
+      <JsonLd data={articleJsonLd({
+        title: article.title,
+        description: article.dek,
+        path: `/piezas/${article.slug}`,
+        image: article.image,
+        date: article.date,
+        author: article.byline,
+        section: section.name,
+        country: article.country,
+      })} />
+      {geo.faqs.length ? <JsonLd data={faqJsonLd(geo.faqs)} /> : null}
+      <JsonLd data={breadcrumbJsonLd(crumbs)} />
+
+      <Breadcrumbs
+        items={[
+          { name: "Inicio", to: "/" },
+          { name: section.name, to: section.path },
+          { name: article.country },
+          { name: article.rubric },
+        ]}
+      />
+
+      <header className="page-wrap max-w-[760px] pb-6 pt-2 md:pt-4">
         <StoryKicker article={article} />
         <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.12] tracking-[-0.03em] text-fg md:text-[2.75rem]">
           {article.title}
@@ -45,26 +89,39 @@ function ArticlePage() {
         <p className="dek mt-5 text-xl leading-snug md:text-[1.35rem]">{article.dek}</p>
         <p className="byline mt-6">
           Por {article.byline}
-          <span className="not-italic text-subtle"> · {article.dateLabel}</span>
+          <span className="not-italic text-subtle">
+            {" "}
+            · Publicado {article.dateLabel} · Actualizado {article.dateLabel}
+          </span>
         </p>
       </header>
 
       <figure className="page-wrap max-w-[920px] py-2">
-        <img src={article.image} alt="" className="story-photo story-photo--article" />
+        <img
+          src={article.image}
+          alt={geo.alt}
+          className="story-photo story-photo--article"
+          loading="eager"
+          decoding="async"
+        />
         <figcaption className="mt-3 font-ui text-xs leading-relaxed text-subtle">
-          {article.country} · {section.name} · {article.readMin} min de lectura
+          {geo.alt} {article.country} · {section.name} · {article.readMin} min de lectura
         </figcaption>
       </figure>
 
       <article className="article-prose page-wrap max-w-[680px] pb-16 pt-8">
+        <EnBreve items={geo.tldr} />
         {article.body.map((block, i) => (
           <Block key={i} block={block} first={i === 0} />
         ))}
+        <ArticleGeo article={article} more={more} />
         <p className="mt-14 font-ui text-xs leading-relaxed text-subtle">
-          Conflictos de interés: la dirección de Politarca declara no tener relación comercial
-          con las instituciones cubiertas en esta pieza.
+          Politarca es un medio liberal de centroderecha que reporta el poder en América Latina.
+          Conflictos de interés: la dirección declara no tener relación comercial con las
+          instituciones cubiertas en esta pieza.
           <br />
-          Cita: {article.byline} ({article.date.slice(0, 4)}). “{article.title}”. Politarca.
+          Cita: {article.byline} ({article.date.slice(0, 4)}). “{article.title}”. Politarca.{" "}
+          {article.country}.
         </p>
       </article>
 
