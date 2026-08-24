@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { EnBreve, FaqBlock } from "@/components/geo-blocks";
+import { EnBreve } from "@/components/geo-blocks";
 import { JsonLd } from "@/components/json-ld";
 import { NewsletterBand } from "@/components/newsletter";
 import { STANDARDS, TAGLINE } from "@/lib/content";
@@ -102,7 +102,6 @@ function Nosotros() {
           bien pensada, y el -arca de monarca y oligarca: quien manda. Un medio sobre quién manda,
           y sobre lo que queda cuando pasa.
         </p>
-        <FaqBlock faqs={MANIFIESTO_FAQS} />
       </section>
 
       <section id="estandares" className="border-t border-border">

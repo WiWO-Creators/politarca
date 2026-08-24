@@ -1,8 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { Article } from "@/lib/content";
 import { getSection } from "@/lib/content";
-import type { Faq } from "@/lib/geo";
-import { getGeo } from "@/lib/geo";
 
 export function EnBreve({ items }: { items: string[] }) {
   if (!items.length) return null;
@@ -17,23 +15,6 @@ export function EnBreve({ items }: { items: string[] }) {
         ))}
       </ul>
     </aside>
-  );
-}
-
-export function FaqBlock({ faqs }: { faqs: Faq[] }) {
-  if (!faqs.length) return null;
-  return (
-    <section className="mt-14 border-t border-border pt-10">
-      <h2 className="font-display text-2xl font-semibold tracking-[-0.02em]">Preguntas</h2>
-      <dl className="mt-6 space-y-6">
-        {faqs.map((f) => (
-          <div key={f.q}>
-            <dt className="font-display text-lg font-medium leading-snug">{f.q}</dt>
-            <dd className="dek mt-2">{f.a}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
   );
 }
 
@@ -74,11 +55,5 @@ export function SeeAlso({ article, more }: { article: Article; more: Article[] }
 }
 
 export function ArticleGeo({ article, more }: { article: Article; more: Article[] }) {
-  const geo = getGeo(article);
-  return (
-    <>
-      <FaqBlock faqs={geo.faqs} />
-      <SeeAlso article={article} more={more} />
-    </>
-  );
+  return <SeeAlso article={article} more={more} />;
 }

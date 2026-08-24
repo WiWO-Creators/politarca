@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FaqBlock } from "@/components/geo-blocks";
 import { JsonLd } from "@/components/json-ld";
 import { NewsletterBand } from "@/components/newsletter";
 import { StoryTease } from "@/components/story-tease";
@@ -50,10 +49,6 @@ function Home() {
             <StoryTease key={a.slug} article={a} size="mix" />
           ))}
         </div>
-      </section>
-
-      <section className="page-wrap max-w-[680px] pb-16">
-        <FaqBlock faqs={HOME_FAQS} />
       </section>
 
       <NewsletterBand />
