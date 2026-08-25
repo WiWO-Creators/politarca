@@ -1,7 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArticleBody } from "@/components/article-body";
 import { ArticleChart } from "@/components/charts";
+import { Agora } from "@/components/agora";
 import { ArticleGeo, EnBreve } from "@/components/geo-blocks";
+import { ShareBar } from "@/components/share-bar";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { StoryKicker, StoryTease } from "@/components/story-tease";
@@ -82,25 +84,28 @@ function ArticlePage() {
         ]}
       />
 
-      <header className="page-wrap max-w-[760px] pb-5 pt-1 md:pb-6 md:pt-4">
+      <header className="reading-col pb-6 pt-2 md:pb-8 md:pt-8">
         <StoryKicker article={article} />
-        <h1 className="mt-3 font-display text-[1.7rem] font-semibold leading-[1.12] tracking-[-0.03em] text-fg md:text-[2.75rem]">
+        <h1 className="mt-3 font-display text-[1.85rem] font-semibold leading-[1.14] tracking-[-0.03em] text-fg md:text-[2.85rem] md:leading-[1.12]">
           {article.title}
         </h1>
-        <p className="dek mt-4 text-[1.05rem] leading-snug md:mt-5 md:text-[1.35rem]">{article.dek}</p>
+        <p className="dek mt-5 text-[1.1rem] leading-relaxed md:mt-6 md:text-[1.35rem]">{article.dek}</p>
         <p className="byline mt-5 md:mt-6">
           Por {article.byline}
           <span className="not-italic text-subtle">
             <span className="md:hidden"> · {article.dateLabel} · {article.readMin} min</span>
             <span className="hidden md:inline">
               {" "}
-              · Publicado {article.dateLabel} · Actualizado {article.dateLabel}
+              · Publicado {article.dateLabel} · Actualizado {article.dateLabel} · {article.readMin} min
             </span>
           </span>
         </p>
+        <div className="mt-6">
+          <ShareBar title={article.title} path={`/piezas/${article.slug}`} country={article.country} />
+        </div>
       </header>
 
-      <figure className="page-wrap max-w-[920px] py-2">
+      <figure className="page-wrap max-w-[980px] py-3 md:py-5">
         <img
           src={article.image}
           alt={geo.alt}
@@ -113,7 +118,7 @@ function ArticlePage() {
         </figcaption>
       </figure>
 
-      <article className="article-prose page-wrap max-w-[680px] pb-16 pt-8">
+      <article className="article-prose reading-col pb-20 pt-8 md:pt-10">
         <EnBreve items={geo.tldr} />
         {article.markdown ? (
           <ArticleBody markdown={article.markdown} dropcap />
@@ -134,7 +139,12 @@ function ArticlePage() {
             <p className="font-body text-[0.95rem] leading-relaxed text-muted">{article.editNote}</p>
           </aside>
         ) : null}
+        <div className="mt-12 border-t border-border pt-8">
+          <p className="rubric mb-4">Compartir</p>
+          <ShareBar title={article.title} path={`/piezas/${article.slug}`} country={article.country} />
+        </div>
         <ArticleGeo article={article} more={more} />
+        <Agora slug={article.slug} title={article.title} country={article.country} />
         <p className="mt-14 font-ui text-xs leading-relaxed text-subtle">
           Politarca es un medio liberal de centroderecha que reporta el poder en América Latina.
           Conflictos de interés: la dirección declara no tener relación comercial con las

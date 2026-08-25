@@ -73,7 +73,7 @@ function List({ block, ordered }: { block: string; ordered: boolean }) {
     .map((l) => l.replace(/^\s*(?:[-*]|\d+\.)\s+/, ""));
   const Tag = ordered ? "ol" : "ul";
   return (
-    <Tag className="my-5 space-y-2 pl-5 font-body text-[1.05rem] leading-[1.6] text-fg md:my-6 md:text-[1.125rem] md:leading-[1.65]">
+    <Tag className="my-6 space-y-2 pl-5 leading-[1.7] md:my-7">
       {items.map((item) => (
         <li key={item.slice(0, 48)} className="pl-1">
           {inline(item)}
@@ -103,7 +103,7 @@ export function ArticleBody({ markdown, dropcap }: { markdown: string; dropcap?:
           return (
             <h2
               key={i}
-              className="mb-3 mt-9 font-display text-[1.35rem] font-semibold tracking-[-0.02em] text-fg md:mb-4 md:mt-12 md:text-[1.65rem]"
+              className="mb-4 mt-10 font-display text-[1.45rem] font-semibold tracking-[-0.02em] text-fg md:mb-5 md:mt-14 md:text-[1.85rem]"
             >
               {inline(text)}
             </h2>
@@ -133,8 +133,8 @@ export function ArticleBody({ markdown, dropcap }: { markdown: string; dropcap?:
             key={i}
             className={
               isFirst
-                ? "dropcap text-[1.05rem] leading-[1.6] text-fg md:text-[1.125rem] md:leading-[1.65]"
-                : "text-[1.05rem] leading-[1.6] text-fg md:text-[1.125rem] md:leading-[1.65]"
+                ? "dropcap"
+                : undefined
             }
           >
             {inline(block.replace(/\n/g, " "))}

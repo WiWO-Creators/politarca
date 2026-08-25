@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { ARTICLES, NAV } from "@/lib/content";
 import { SubscribeForm } from "./subscribe-form";
 import { StoryKicker } from "./story-tease";
-import { useTheme } from "./theme-provider";
+import { ThemeToggle } from "./theme-toggle";
+import { nextThemeLabel, useTheme } from "./theme-provider";
+import { ReadingProgress } from "./reading-progress";
 
 type Overlay = "menu" | "search" | "subscribe" | null;
 
@@ -29,7 +31,7 @@ function todayLabel(compact = false) {
 }
 
 export function SiteHeader() {
-  const { theme, toggle } = useTheme();
+  const { theme, cycle } = useTheme();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const here = `${pathname}`;
   const isHome = pathname === "/";
@@ -97,7 +99,8 @@ export function SiteHeader() {
             </Link>
           )}
 
-          <div className="flex items-center justify-end gap-1 md:gap-5">
+          <div className="flex items-center justify-end gap-0.5 md:gap-3">
+            <ThemeToggle />
             <button
               type="button"
               onClick={() => setOverlay(overlay === "search" ? null : "search")}
@@ -119,6 +122,7 @@ export function SiteHeader() {
             </button>
           </div>
         </div>
+        {!isHome ? <ReadingProgress /> : null}
       </div>
 
       {isHome ? (
@@ -190,8 +194,8 @@ export function SiteHeader() {
                   <button type="button" className="min-h-11 text-left hover:opacity-70" onClick={() => setOverlay("search")}>
                     Buscar en el archivo
                   </button>
-                  <button type="button" className="min-h-11 text-left hover:opacity-70" onClick={toggle}>
-                    {theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+                  <button type="button" className="min-h-11 text-left hover:opacity-70" onClick={cycle}>
+                    {nextThemeLabel(theme)}
                   </button>
                   <Link
                     to="/balance"

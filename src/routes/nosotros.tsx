@@ -48,7 +48,7 @@ function Nosotros() {
         </p>
       </header>
 
-      <section className="article-prose page-wrap max-w-[680px] space-y-5 pb-8 font-body text-lg leading-relaxed">
+      <section className="article-prose reading-col space-y-6 pb-10 font-body leading-relaxed">
         <EnBreve
           items={[
             "La derecha gobierna en Argentina, Chile, Colombia, Perú y Costa Rica; Brasil vota el 4 de octubre de 2026.",
@@ -105,7 +105,7 @@ function Nosotros() {
       </section>
 
       <section id="estandares" className="border-t border-border">
-        <div className="page-wrap max-w-[680px] py-16">
+        <div className="reading-col py-16">
           <p className="rubric">La casa</p>
           <h2 className="mt-3 font-display text-3xl">Diez reglas</h2>
           <ol className="mt-8 space-y-4">

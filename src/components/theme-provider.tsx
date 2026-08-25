@@ -8,47 +8,72 @@ import {
   type ReactNode,
 } from "react";
 
-type Theme = "dark" | "light";
+export type Theme = "light" | "paper" | "dark";
 
 type ThemeContextValue = {
   theme: Theme;
-  toggle: () => void;
+  cycle: () => void;
+  setTheme: (t: Theme) => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme: "light",
-  toggle: () => {},
+  cycle: () => {},
+  setTheme: () => {},
 });
 
-const STORAGE_KEY = "politarca-theme-v2";
+const STORAGE_KEY = "politarca-theme-v3";
+const ORDER: Theme[] = ["light", "paper", "dark"];
+
+function apply(theme: Theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const color = theme === "dark" ? "#111111" : theme === "paper" ? "#f3ead8" : "#ffffff";
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", color);
+}
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "light" || saved === "dark") {
-      setTheme(saved);
-      document.documentElement.setAttribute("data-theme", saved);
-    } else {
-      document.documentElement.setAttribute("data-theme", "light");
-    }
+    const next: Theme = saved === "light" || saved === "paper" || saved === "dark" ? saved : "light";
+    setThemeState(next);
+    apply(next);
   }, []);
 
-  const toggle = useCallback(() => {
-    setTheme((prev) => {
-      const next: Theme = prev === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
+  const setTheme = useCallback((next: Theme) => {
+    setThemeState(next);
+    apply(next);
+    window.localStorage.setItem(STORAGE_KEY, next);
+  }, []);
+
+  const cycle = useCallback(() => {
+    setThemeState((prev) => {
+      const next = ORDER[(ORDER.indexOf(prev) + 1) % ORDER.length] ?? "light";
+      apply(next);
       window.localStorage.setItem(STORAGE_KEY, next);
       return next;
     });
   }, []);
 
-  const value = useMemo(() => ({ theme, toggle }), [theme, toggle]);
+  const value = useMemo(() => ({ theme, cycle, setTheme }), [theme, cycle, setTheme]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
   return useContext(ThemeContext);
+}
+
+export function themeLabel(theme: Theme) {
+  if (theme === "paper") return "Papel";
+  if (theme === "dark") return "Oscuro";
+  return "Claro";
+}
+
+export function nextThemeLabel(theme: Theme) {
+  if (theme === "light") return "Pasar a papel";
+  if (theme === "paper") return "Pasar a oscuro";
+  return "Pasar a claro";
 }
