@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { JsonLd } from "@/components/json-ld";
 import { NewsletterBand } from "@/components/newsletter";
 import { StoryTease } from "@/components/story-tease";
-import { ARTICLES } from "@/lib/content";
+import { featuredArticle, otherArticles } from "@/lib/content";
 import { HOME_FAQS } from "@/lib/geo";
 import { faqJsonLd, orgJsonLd, pageHead, websiteJsonLd } from "@/lib/seo";
 
@@ -20,7 +20,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const [hero, ...rest] = ARTICLES;
+  const hero = featuredArticle();
+  const rest = otherArticles(hero.slug);
   const pair = rest.slice(0, 2);
   const mix = rest.slice(2, 6);
 
