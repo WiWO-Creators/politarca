@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { Article } from "@/lib/content";
-import { getSection } from "@/lib/content";
+import { country, getSection } from "@/lib/content";
 
 export function EnBreve({ items }: { items: string[] }) {
   if (!items.length) return null;
@@ -19,12 +19,12 @@ export function EnBreve({ items }: { items: string[] }) {
 }
 
 export function SeeAlso({ article, more }: { article: Article; more: Article[] }) {
-  const section = getSection(article.section);
+  const section = getSection(article.section?.id);
   const related = more[0];
   return (
     <nav aria-label="Enlaces internos" className="mt-10 font-ui text-sm leading-relaxed text-muted">
       <p>
-        País: {article.country}. Sección:{" "}
+        País: {country(article)}. Sección:{" "}
         <Link to={section.path} className="italic text-accent hover:opacity-80">
           {section.name} — {section.kicker}
         </Link>
@@ -41,10 +41,10 @@ export function SeeAlso({ article, more }: { article: Article; more: Article[] }
             . Lea también:{" "}
             <Link
               to="/piezas/$slug"
-              params={{ slug: related.slug }}
+              params={{ slug: related.id }}
               className="italic text-accent hover:opacity-80"
             >
-              {related.country}: {related.title}
+              {country(related)}: {related.title}
             </Link>
             .
           </>

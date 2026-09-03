@@ -6,8 +6,13 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SITE, abs } from "@/lib/seo";
 import appCss from "../styles.css?url";
+import { getArticles } from "@/lib/articles";
 
 export const Route = createRootRoute({
+  // La cabecera busca entre TODAS las piezas y corre en el navegador, donde la
+  // base no existe. Se cargan una vez aca y viajan hacia abajo, en vez de que
+  // cada vista las pida por su cuenta.
+  loader: () => getArticles(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },

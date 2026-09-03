@@ -1,20 +1,33 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, getRouteApi, Link, notFound } from "@tanstack/react-router";
 import { ArticleBody } from "@/components/article-body";
-import { ArticleChart } from "@/components/charts";
 import { Agora } from "@/components/agora";
 import { ArticleGeo, EnBreve } from "@/components/geo-blocks";
 import { ShareBar } from "@/components/share-bar";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { StoryKicker, StoryTease } from "@/components/story-tease";
-import { getArticle, getSection, otherArticles, type ArticleBlock } from "@/lib/content";
+import {
+  bodyBlocks,
+  country,
+  editNote,
+  getSection,
+  longDate,
+  otherArticles,
+  sources,
+} from "@/lib/content";
+import { getArticleBySlug } from "@/lib/articles";
 import { getGeo } from "@/lib/geo";
 import { PLATE_CREDIT } from "@/lib/plates";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, pageHead } from "@/lib/seo";
 
+/** Las piezas salen del loader raíz: incluyen lo que publicó el orquestador. */
+const rootRoute = getRouteApi("__root__");
+
 export const Route = createFileRoute("/piezas/$slug")({
-  loader: ({ params }) => {
-    const article = getArticle(params.slug);
+  // Asincrono porque ahora tambien mira lo que publico el orquestador, que vive
+  // en la base y no en el modulo del archivo editorial.
+  loader: async ({ params }) => {
+    const article = await getArticleBySlug({ data: params.slug });
     if (!article) throw notFound();
     return { article };
   },
@@ -22,15 +35,15 @@ export const Route = createFileRoute("/piezas/$slug")({
     if (!loaderData) return { meta: [{ title: "Pieza — el politarca" }] };
     const { article } = loaderData;
     const geo = getGeo(article);
-    const section = getSection(article.section);
+    const section = getSection(article.section?.id);
     return pageHead({
       title: `${article.title} | Politarca`,
-      description: `${article.country}. ${article.dek}`,
-      path: `/piezas/${article.slug}`,
-      image: article.image,
+      description: `${country(article)}. ${article.summary}`,
+      path: `/piezas/${article.id}`,
+      image: article.image?.url,
       type: "article",
-      published: article.date,
-      modified: article.date,
+      published: article.publishedAt,
+      modified: article.updatedAt,
       section: section.name,
       tags: geo.tags,
       ogTitle: geo.ogTitle,
@@ -51,27 +64,27 @@ export const Route = createFileRoute("/piezas/$slug")({
 
 function ArticlePage() {
   const { article } = Route.useLoaderData();
-  const more = otherArticles(article.slug).slice(0, 3);
-  const section = getSection(article.section);
+  const more = otherArticles(rootRoute.useLoaderData(), article.id).slice(0, 3);
+  const section = getSection(article.section?.id);
   const geo = getGeo(article);
   const crumbs = [
     { name: "Inicio", path: "/" },
     { name: section.name, path: section.path },
-    { name: article.country, path: section.path },
-    { name: article.title, path: `/piezas/${article.slug}` },
+    { name: country(article), path: section.path },
+    { name: article.title, path: `/piezas/${article.id}` },
   ];
 
   return (
     <main>
       <JsonLd data={articleJsonLd({
         title: article.title,
-        description: article.dek,
-        path: `/piezas/${article.slug}`,
-        image: article.image,
-        date: article.date,
-        author: article.byline,
+        description: article.summary,
+        path: `/piezas/${article.id}`,
+        image: article.image?.url ?? "",
+        date: article.publishedAt,
+        author: article.author?.name ?? "",
         section: section.name,
-        country: article.country,
+        country: country(article),
       })} />
       {geo.faqs.length ? <JsonLd data={faqJsonLd(geo.faqs)} /> : null}
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
@@ -80,7 +93,7 @@ function ArticlePage() {
         items={[
           { name: "Inicio", to: "/" },
           { name: section.name, to: section.path },
-          { name: article.country },
+          { name: country(article) },
         ]}
       />
 
@@ -89,69 +102,63 @@ function ArticlePage() {
         <h1 className="mt-3 font-display text-[1.85rem] font-semibold leading-[1.14] tracking-[-0.03em] text-fg md:text-[2.85rem] md:leading-[1.12]">
           {article.title}
         </h1>
-        <p className="dek mt-5 text-[1.1rem] leading-relaxed md:mt-6 md:text-[1.35rem]">{article.dek}</p>
+        <p className="dek mt-5 text-[1.1rem] leading-relaxed md:mt-6 md:text-[1.35rem]">{article.summary}</p>
         <p className="byline mt-5 md:mt-6">
-          Por {article.byline}
+          Por {article.author?.name}
           <span className="not-italic text-subtle">
-            <span className="md:hidden"> · {article.dateLabel} · {article.readMin} min</span>
+            <span className="md:hidden"> · {longDate(article.publishedAt)} · {article.readingMinutes} min</span>
             <span className="hidden md:inline">
               {" "}
-              · Publicado {article.dateLabel} · Actualizado {article.dateLabel} · {article.readMin} min
+              · Publicado {longDate(article.publishedAt)} · Actualizado {longDate(article.updatedAt)} · {article.readingMinutes} min
             </span>
           </span>
         </p>
         <div className="mt-6">
-          <ShareBar title={article.title} path={`/piezas/${article.slug}`} country={article.country} />
+          <ShareBar title={article.title} path={`/piezas/${article.id}`} country={country(article)} />
         </div>
       </header>
 
       <figure className="page-wrap max-w-[980px] py-3 md:py-5">
         <img
-          src={article.image}
+          src={article.image?.url}
           alt={geo.alt}
           className="story-photo story-photo--article bleed-photo"
           loading="eager"
           decoding="async"
         />
         <figcaption className="mt-3 font-ui text-[0.7rem] leading-relaxed text-subtle md:text-xs">
-          {PLATE_CREDIT[article.slug] ?? geo.alt} {article.country} · {section.name} · {article.readMin} min
+          {PLATE_CREDIT[article.id] ?? geo.alt} {country(article)} · {section.name} · {article.readingMinutes} min
         </figcaption>
       </figure>
 
       <article className="article-prose reading-col pb-20 pt-8 md:pt-10">
         <EnBreve items={geo.tldr} />
-        {article.markdown ? (
-          <ArticleBody markdown={article.markdown} dropcap />
-        ) : (
-          (article.body ?? []).map((block, i) => (
-            <Block key={i} block={block} first={i === 0} />
-          ))
-        )}
-        {article.sources ? (
+        <ArticleBody blocks={bodyBlocks(article)} dropcap />
+        {sources(article) ? (
           <aside className="my-12">
             <p className="rubric mb-3">Fuentes</p>
-            <p className="font-body text-[0.95rem] leading-relaxed text-muted">{article.sources}</p>
+            <p className="font-body text-[0.95rem] leading-relaxed text-muted">{sources(article)}</p>
           </aside>
         ) : null}
-        {article.editNote ? (
+        {editNote(article) ? (
           <aside className="mb-8">
             <p className="rubric mb-3">Nota de edición</p>
-            <p className="font-body text-[0.95rem] leading-relaxed text-muted">{article.editNote}</p>
+            <p className="font-body text-[0.95rem] leading-relaxed text-muted">{editNote(article)}</p>
           </aside>
         ) : null}
         <div className="mt-12 border-t border-border pt-8">
           <p className="rubric mb-4">Compartir</p>
-          <ShareBar title={article.title} path={`/piezas/${article.slug}`} country={article.country} />
+          <ShareBar title={article.title} path={`/piezas/${article.id}`} country={country(article)} />
         </div>
         <ArticleGeo article={article} more={more} />
-        <Agora slug={article.slug} title={article.title} country={article.country} />
+        <Agora slug={article.id} title={article.title} country={country(article)} />
         <p className="mt-14 font-ui text-xs leading-relaxed text-subtle">
           Politarca es un medio liberal de centroderecha que reporta el poder en América Latina.
           Conflictos de interés: la dirección declara no tener relación comercial con las
           instituciones cubiertas en esta pieza.
           <br />
-          Cita: {article.byline} ({article.date.slice(0, 4)}). “{article.title}”. Politarca.{" "}
-          {article.country}.
+          Cita: {article.author?.name} ({article.publishedAt.slice(0, 4)}). “{article.title}”. Politarca.{" "}
+          {country(article)}.
         </p>
       </article>
 
@@ -161,7 +168,7 @@ function ArticlePage() {
             <h2 className="mix-title mb-8 md:mb-10">Más de Politarca</h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 md:gap-10">
               {more.map((a) => (
-                <StoryTease key={a.slug} article={a} size="mix" />
+                <StoryTease key={a.id} article={a} size="mix" />
               ))}
             </div>
           </div>
@@ -169,52 +176,4 @@ function ArticlePage() {
       ) : null}
     </main>
   );
-}
-
-function Block({ block, first }: { block: ArticleBlock; first: boolean }) {
-  switch (block.type) {
-    case "p":
-      return (
-        <p className={first ? "dropcap text-[1.125rem] leading-[1.65] text-fg" : "text-[1.125rem] leading-[1.65] text-fg"}>
-          {block.text}
-        </p>
-      );
-    case "h2":
-      return (
-        <h2 className="mb-4 mt-12 font-display text-[1.65rem] font-semibold tracking-[-0.02em] text-fg">
-          {block.text}
-        </h2>
-      );
-    case "pullquote":
-      return (
-        <blockquote className="my-12 font-display text-[1.65rem] font-medium italic leading-snug tracking-[-0.02em] text-fg md:text-3xl">
-          {block.text}
-        </blockquote>
-      );
-    case "stat":
-      return (
-        <aside className="my-10 border-y border-border py-8">
-          <p className="font-display text-5xl font-semibold tracking-[-0.03em] tabular text-fg">
-            {block.value}
-          </p>
-          <p className="dek mt-3 max-w-xl">{block.caption}</p>
-          <p className="mt-4 font-ui text-xs text-subtle">{block.source}</p>
-        </aside>
-      );
-    case "chart":
-      return <ArticleChart id={block.id} />;
-    case "methodology":
-      return (
-        <aside className="my-12">
-          <p className="rubric mb-3">Metodología</p>
-          {block.paragraphs.map((p) => (
-            <p key={p.slice(0, 24)} className="mb-3 font-body text-[0.95rem] leading-relaxed text-muted last:mb-0">
-              {p}
-            </p>
-          ))}
-        </aside>
-      );
-    default:
-      return null;
-  }
 }

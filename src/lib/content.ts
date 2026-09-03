@@ -1,3 +1,4 @@
+import type { WiwoSiteArticle } from "@wiwo/contract";
 import { BANCO } from "./banco";
 
 export type SectionId =
@@ -18,44 +19,18 @@ export type FormatId =
   | "archivo"
   | "ensayo";
 
-export type ArticleBlock =
-  | { type: "p"; text: string }
-  | { type: "h2"; text: string }
-  | { type: "pullquote"; text: string }
-  | { type: "stat"; value: string; caption: string; source: string }
-  | { type: "chart"; id: "stock" | "hours" | "emitters" | "regions" }
-  | { type: "methodology"; paragraphs: string[] };
-
-export type Faq = { q: string; a: string };
-
-export type Article = {
-  slug: string;
-  title: string;
-  dek: string;
-  section: SectionId;
-  format: FormatId;
-  rubric: string;
-  country: string;
-  date: string;
-  dateLabel: string;
-  readMin: number;
-  byline: string;
-  excerpt: string;
-  image: string;
-  featured?: boolean;
-  markdown?: string;
-  sources?: string;
-  editNote?: string;
-  alt?: string;
-  ogTitle?: string;
-  ogDescription?: string;
-  tags?: string[];
-  tldr?: string[];
-  faqs?: Faq[];
-  body?: ArticleBlock[];
-};
-
-export type BancoArticle = Article;
+/**
+ * Una pieza del sitio.
+ *
+ * Es el tipo del CONTRATO, no uno propio. Antes había un modelo interno y dos
+ * adaptadores para traducirlo de ida y de vuelta; cada campo que un adaptador no
+ * cubriera se perdía en silencio al editar una pieza publicada. Ahora lo que el
+ * sitio muestra y lo que entrega al orquestador son el mismo dato.
+ *
+ * Lo propio de politarca —el formato editorial, la rúbrica, el país— vive en
+ * `extra`, y se lee con los accesos de más abajo.
+ */
+export type Article = WiwoSiteArticle;
 
 export type Section = {
   id: SectionId;
@@ -221,26 +196,71 @@ export const STANDARDS = [
 
 export const NAV = SECTIONS.map((s) => ({ to: s.path, label: s.name }));
 
-export function getSection(id: SectionId) {
+export function getSection(id: string | undefined) {
   return SECTIONS.find((s) => s.id === id)!;
 }
 
-export function storyKicker(article: Article) {
-  return `${article.country} · ${article.rubric}`;
+/**
+ * Un campo propio del sitio.
+ *
+ * `extra` no está tipado —el contrato lo transporta sin entenderlo—, así que se
+ * lee por acá y no a mano: un campo ausente devuelve cadena vacía en vez de
+ * `undefined` colándose hasta la pantalla.
+ */
+function propio(article: Article, clave: string): string {
+  const valor = article.extra?.[clave];
+  return typeof valor === "string" ? valor : "";
 }
 
-export function getArticle(slug: string) {
-  return ARTICLES.find((a) => a.slug === slug);
+/** El país sobre el que trata la pieza. */
+export const country = (article: Article) => propio(article, "country");
+/** La rúbrica editorial: El Ensayo, El Archivo, El Contrapunto. */
+export const rubric = (article: Article) => propio(article, "rubric");
+/** El arranque que se muestra en portada, más corto que la bajada. */
+export const excerpt = (article: Article) => propio(article, "excerpt");
+/** La bibliografía, al pie de la pieza. */
+export const sources = (article: Article) => propio(article, "sources");
+/** La advertencia de la edición, al pie de la pieza. */
+export const editNote = (article: Article) => propio(article, "editNote");
+
+/**
+ * El cuerpo de una pieza, siempre como bloques.
+ *
+ * El contrato admite además Markdown en una cadena, porque hay sitios que
+ * escriben así. Este no: guarda bloques desde que el archivo se pasó a la forma
+ * del contrato, y una pieza que llegara en Markdown se lee vacía en vez de
+ * dibujarse como texto plano sin formato.
+ */
+export function bodyBlocks(article: Article) {
+  return article.body.format === "blocks" ? article.body.blocks : [];
 }
 
-export function articlesBySection(id: SectionId) {
-  return ARTICLES.filter((a) => a.section === id);
+/**
+ * La fecha como la escribe el sitio: "24 de agosto de 2026".
+ *
+ * Se deriva de la fecha en vez de guardarse ya escrita. Una fecha formateada es
+ * presentación, y guardarla obligaría a que el orquestador la mandara bien
+ * escrita para que la pieza no se viera rota.
+ */
+export function longDate(iso: string) {
+  return new Intl.DateTimeFormat("es-CL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(iso + "T12:00:00"));
 }
 
-export function featuredArticle() {
-  return ARTICLES.find((a) => a.featured) ?? ARTICLES[0];
+/*
+ * Las consultas reciben la LISTA en vez de leer ARTICLES. La constante es solo
+ * el archivo del repositorio, y desde que el orquestador publica ya no es todo
+ * lo que el sitio tiene: leerla acá dejaría cada vista mostrando media verdad.
+ * La lista completa la arma lib/articles.ts uniendo las dos fuentes.
+ */
+
+export function articlesBySection(list: Article[], id: string) {
+  return list.filter((a) => a.section?.id === id);
 }
 
-export function otherArticles(slug?: string) {
-  return ARTICLES.filter((a) => a.slug !== slug);
+export function otherArticles(list: Article[], id?: string) {
+  return list.filter((a) => a.id !== id);
 }

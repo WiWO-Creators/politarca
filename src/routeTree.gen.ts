@@ -21,6 +21,10 @@ import { Route as PolisRouteImport } from './routes/polis'
 import { Route as VidaComunRouteImport } from './routes/vida-comun'
 import { Route as PiezasIndexRouteImport } from './routes/piezas.index'
 import { Route as PiezasSlugRouteImport } from './routes/piezas.$slug'
+import { Route as ApiWiwoV1ArticlesRouteImport } from './routes/api/wiwo/v1/articles'
+import { Route as ApiWiwoV1ManifestRouteImport } from './routes/api/wiwo/v1/manifest'
+import { Route as ApiWiwoV1MediaRouteImport } from './routes/api/wiwo/v1/media'
+import { Route as ApiWiwoV1MediaIdRouteImport } from './routes/api/wiwo/v1/media.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +86,26 @@ const PiezasSlugRoute = PiezasSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PiezasRoute,
 } as any)
+const ApiWiwoV1ArticlesRoute = ApiWiwoV1ArticlesRouteImport.update({
+  id: '/api/wiwo/v1/articles',
+  path: '/api/wiwo/v1/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWiwoV1ManifestRoute = ApiWiwoV1ManifestRouteImport.update({
+  id: '/api/wiwo/v1/manifest',
+  path: '/api/wiwo/v1/manifest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWiwoV1MediaRoute = ApiWiwoV1MediaRouteImport.update({
+  id: '/api/wiwo/v1/media',
+  path: '/api/wiwo/v1/media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWiwoV1MediaIdRoute = ApiWiwoV1MediaIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ApiWiwoV1MediaRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -96,6 +120,10 @@ export interface FileRoutesByFullPath {
   '/vida-comun': typeof VidaComunRoute
   '/piezas/$slug': typeof PiezasSlugRoute
   '/piezas/': typeof PiezasIndexRoute
+  '/api/wiwo/v1/articles': typeof ApiWiwoV1ArticlesRoute
+  '/api/wiwo/v1/manifest': typeof ApiWiwoV1ManifestRoute
+  '/api/wiwo/v1/media': typeof ApiWiwoV1MediaRouteWithChildren
+  '/api/wiwo/v1/media/$id': typeof ApiWiwoV1MediaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -109,6 +137,10 @@ export interface FileRoutesByTo {
   '/vida-comun': typeof VidaComunRoute
   '/piezas/$slug': typeof PiezasSlugRoute
   '/piezas': typeof PiezasIndexRoute
+  '/api/wiwo/v1/articles': typeof ApiWiwoV1ArticlesRoute
+  '/api/wiwo/v1/manifest': typeof ApiWiwoV1ManifestRoute
+  '/api/wiwo/v1/media': typeof ApiWiwoV1MediaRouteWithChildren
+  '/api/wiwo/v1/media/$id': typeof ApiWiwoV1MediaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -124,6 +156,10 @@ export interface FileRoutesById {
   '/vida-comun': typeof VidaComunRoute
   '/piezas/$slug': typeof PiezasSlugRoute
   '/piezas/': typeof PiezasIndexRoute
+  '/api/wiwo/v1/articles': typeof ApiWiwoV1ArticlesRoute
+  '/api/wiwo/v1/manifest': typeof ApiWiwoV1ManifestRoute
+  '/api/wiwo/v1/media': typeof ApiWiwoV1MediaRouteWithChildren
+  '/api/wiwo/v1/media/$id': typeof ApiWiwoV1MediaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,6 +176,10 @@ export interface FileRouteTypes {
     | '/vida-comun'
     | '/piezas/$slug'
     | '/piezas/'
+    | '/api/wiwo/v1/articles'
+    | '/api/wiwo/v1/manifest'
+    | '/api/wiwo/v1/media'
+    | '/api/wiwo/v1/media/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -153,6 +193,10 @@ export interface FileRouteTypes {
     | '/vida-comun'
     | '/piezas/$slug'
     | '/piezas'
+    | '/api/wiwo/v1/articles'
+    | '/api/wiwo/v1/manifest'
+    | '/api/wiwo/v1/media'
+    | '/api/wiwo/v1/media/$id'
   id:
     | '__root__'
     | '/'
@@ -167,6 +211,10 @@ export interface FileRouteTypes {
     | '/vida-comun'
     | '/piezas/$slug'
     | '/piezas/'
+    | '/api/wiwo/v1/articles'
+    | '/api/wiwo/v1/manifest'
+    | '/api/wiwo/v1/media'
+    | '/api/wiwo/v1/media/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -180,6 +228,9 @@ export interface RootRouteChildren {
   PiezasRoute: typeof PiezasRouteWithChildren
   PolisRoute: typeof PolisRoute
   VidaComunRoute: typeof VidaComunRoute
+  ApiWiwoV1ArticlesRoute: typeof ApiWiwoV1ArticlesRoute
+  ApiWiwoV1ManifestRoute: typeof ApiWiwoV1ManifestRoute
+  ApiWiwoV1MediaRoute: typeof ApiWiwoV1MediaRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -268,6 +319,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PiezasSlugRouteImport
       parentRoute: typeof PiezasRoute
     }
+    '/api/wiwo/v1/articles': {
+      id: '/api/wiwo/v1/articles'
+      path: '/api/wiwo/v1/articles'
+      fullPath: '/api/wiwo/v1/articles'
+      preLoaderRoute: typeof ApiWiwoV1ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/wiwo/v1/manifest': {
+      id: '/api/wiwo/v1/manifest'
+      path: '/api/wiwo/v1/manifest'
+      fullPath: '/api/wiwo/v1/manifest'
+      preLoaderRoute: typeof ApiWiwoV1ManifestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/wiwo/v1/media': {
+      id: '/api/wiwo/v1/media'
+      path: '/api/wiwo/v1/media'
+      fullPath: '/api/wiwo/v1/media'
+      preLoaderRoute: typeof ApiWiwoV1MediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/wiwo/v1/media/$id': {
+      id: '/api/wiwo/v1/media/$id'
+      path: '/$id'
+      fullPath: '/api/wiwo/v1/media/$id'
+      preLoaderRoute: typeof ApiWiwoV1MediaIdRouteImport
+      parentRoute: typeof ApiWiwoV1MediaRoute
+    }
   }
 }
 
@@ -284,6 +363,18 @@ const PiezasRouteChildren: PiezasRouteChildren = {
 const PiezasRouteWithChildren =
   PiezasRoute._addFileChildren(PiezasRouteChildren)
 
+interface ApiWiwoV1MediaRouteChildren {
+  ApiWiwoV1MediaIdRoute: typeof ApiWiwoV1MediaIdRoute
+}
+
+const ApiWiwoV1MediaRouteChildren: ApiWiwoV1MediaRouteChildren = {
+  ApiWiwoV1MediaIdRoute: ApiWiwoV1MediaIdRoute,
+}
+
+const ApiWiwoV1MediaRouteWithChildren = ApiWiwoV1MediaRoute._addFileChildren(
+  ApiWiwoV1MediaRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgoraRoute: AgoraRoute,
@@ -295,6 +386,9 @@ const rootRouteChildren: RootRouteChildren = {
   PiezasRoute: PiezasRouteWithChildren,
   PolisRoute: PolisRoute,
   VidaComunRoute: VidaComunRoute,
+  ApiWiwoV1ArticlesRoute: ApiWiwoV1ArticlesRoute,
+  ApiWiwoV1ManifestRoute: ApiWiwoV1ManifestRoute,
+  ApiWiwoV1MediaRoute: ApiWiwoV1MediaRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,6 +1,7 @@
-import type { Article, Faq } from "./content";
+import { country, excerpt, rubric, type Article } from "./content";
 
-export type { Faq };
+/** Una pregunta con su respuesta. */
+export type Faq = { q: string; a: string };
 
 export type Geo = {
   alt: string;
@@ -32,13 +33,20 @@ export const HOME_FAQS: Faq[] = [
 
 export const MANIFIESTO_FAQS: Faq[] = HOME_FAQS;
 
+/**
+ * La capa de posicionamiento de una pieza, con sus respaldos.
+ *
+ * Es el único lugar que traduce entre la forma del contrato —donde todo esto
+ * vive en `seo`, `image` y `extra`— y los nombres con que las vistas de este
+ * sitio lo piden. Sin él, ese detalle se repetiría en cada componente.
+ */
 export function getGeo(article: Article): Geo {
   return {
-    alt: article.alt ?? `${article.country}. ${article.title}`,
-    ogTitle: article.ogTitle ?? article.title,
-    ogDescription: article.ogDescription ?? article.excerpt,
-    tags: article.tags ?? [article.country, article.rubric],
-    tldr: article.tldr ?? [article.excerpt],
-    faqs: article.faqs ?? [],
+    alt: article.image?.alt || `${country(article)}. ${article.title}`,
+    ogTitle: article.seo.title ?? article.title,
+    ogDescription: article.seo.description ?? excerpt(article),
+    tags: article.tags.length > 0 ? article.tags : [country(article), rubric(article)],
+    tldr: article.seo.tldr.length > 0 ? article.seo.tldr : [excerpt(article)],
+    faqs: article.seo.faq.map(({ question, answer }) => ({ q: question, a: answer })),
   };
 }

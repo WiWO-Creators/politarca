@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import type { Article } from "@/lib/content";
+import { country, excerpt, rubric, type Article } from "@/lib/content";
 import { getGeo } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 
@@ -14,9 +14,9 @@ export function StoryKicker({
 }) {
   return (
     <p className={cn("rubric", className)}>
-      <span className="place">{article.country}</span>
+      <span className="place">{country(article)}</span>
       {" · "}
-      {article.rubric}
+      {rubric(article)}
     </p>
   );
 }
@@ -50,12 +50,12 @@ export function StoryTease({
       {isList ? null : (
         <Link
           to="/piezas/$slug"
-          params={{ slug: article.slug }}
+          params={{ slug: article.id }}
           className="block"
           tabIndex={-1}
         >
           <img
-            src={article.image}
+            src={article.image?.url}
             alt={geo.alt}
             className={cn(photoClass, isHero && "bleed-photo")}
             loading={isHero ? "eager" : "lazy"}
@@ -69,14 +69,14 @@ export function StoryTease({
         <Hed className={hedClass}>
           <Link
             to="/piezas/$slug"
-            params={{ slug: article.slug }}
+            params={{ slug: article.id }}
             className="hed-link"
           >
             {article.title}
           </Link>
         </Hed>
-        <p className={dekClass}>{isHero ? article.dek : article.excerpt}</p>
-        <p className="byline mt-2">Por {article.byline}</p>
+        <p className={dekClass}>{isHero ? article.summary : excerpt(article)}</p>
+        <p className="byline mt-2">Por {article.author?.name}</p>
       </div>
     </article>
   );

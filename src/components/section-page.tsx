@@ -1,10 +1,17 @@
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StoryTease } from "@/components/story-tease";
+import { getRouteApi } from "@tanstack/react-router";
 import { articlesBySection, getSection, type SectionId } from "@/lib/content";
+
+/**
+ * Las piezas salen del loader raíz, no de un módulo: incluyen lo que publicó el
+ * orquestador.
+ */
+const rootRoute = getRouteApi("__root__");
 
 export function SectionPage({ id }: { id: SectionId }) {
   const section = getSection(id);
-  const pieces = articlesBySection(id);
+  const pieces = articlesBySection(rootRoute.useLoaderData(), id);
   const [hero, ...rest] = pieces;
 
   return (
@@ -34,7 +41,7 @@ export function SectionPage({ id }: { id: SectionId }) {
       {rest.length ? (
         <section className="page-wrap grid gap-8 pb-16 sm:grid-cols-2 md:gap-10 md:pb-20">
           {rest.map((a) => (
-            <StoryTease key={a.slug} article={a} size="mix" />
+            <StoryTease key={a.id} article={a} size="mix" />
           ))}
         </section>
       ) : null}

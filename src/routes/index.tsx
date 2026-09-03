@@ -2,12 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { JsonLd } from "@/components/json-ld";
 import { NewsletterBand } from "@/components/newsletter";
 import { StoryTease } from "@/components/story-tease";
-import { ARTICLES } from "@/lib/content";
+import { getArticles } from "@/lib/articles";
 import { HOME_FAQS } from "@/lib/geo";
 import { faqJsonLd, orgJsonLd, pageHead, websiteJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   component: Home,
+  // La portada incluye lo publicado por el orquestador, que vive en la base.
+  loader: () => getArticles(),
   head: () =>
     pageHead({
       title: "Politarca — periodismo liberal en América Latina",
@@ -20,7 +22,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const [hero, ...rest] = ARTICLES;
+  const [hero, ...rest] = Route.useLoaderData();
   const pair = rest.slice(0, 2);
   const mix = rest.slice(2, 6);
 
@@ -37,7 +39,7 @@ function Home() {
       <section className="page-wrap border-t border-border pb-2 pt-8 md:pb-6 md:pt-12">
         <div className="grid gap-8 md:grid-cols-2 md:gap-8 lg:gap-10">
           {pair.map((a) => (
-            <StoryTease key={a.slug} article={a} size="lead" heading="h2" />
+            <StoryTease key={a.id} article={a} size="lead" heading="h2" />
           ))}
         </div>
       </section>
@@ -46,7 +48,7 @@ function Home() {
         <h2 className="mix-title mb-8 md:mb-12">La mezcla de hoy</h2>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
           {mix.map((a) => (
-            <StoryTease key={a.slug} article={a} size="mix" />
+            <StoryTease key={a.id} article={a} size="mix" />
           ))}
         </div>
       </section>

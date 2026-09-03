@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StoryTease } from "@/components/story-tease";
-import { ARTICLES } from "@/lib/content";
+import { getArticles } from "@/lib/articles";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/piezas/")({
   component: Archivo,
+  // El archivo incluye lo publicado por el orquestador, que vive en la base.
+  loader: () => getArticles(),
   head: () =>
     pageHead({
       title: "Archivo de piezas | Politarca",
@@ -16,6 +18,8 @@ export const Route = createFileRoute("/piezas/")({
 });
 
 function Archivo() {
+  const articles = Route.useLoaderData();
+
   return (
     <main>
       <Breadcrumbs items={[{ name: "Inicio", to: "/" }, { name: "Archivo" }]} />
@@ -26,8 +30,8 @@ function Archivo() {
           Pocas, trabajadas. El largo se gana con reporteo, no con vueltas.
         </p>
         <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-          {ARTICLES.map((a) => (
-            <StoryTease key={a.slug} article={a} />
+          {articles.map((a) => (
+            <StoryTease key={a.id} article={a} />
           ))}
         </div>
       </div>

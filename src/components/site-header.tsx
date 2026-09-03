@@ -1,12 +1,18 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { getRouteApi, Link, useRouterState } from "@tanstack/react-router";
 import { Menu, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { ARTICLES, NAV } from "@/lib/content";
+import { country, NAV, rubric } from "@/lib/content";
 import { SubscribeForm } from "./subscribe-form";
 import { StoryKicker } from "./story-tease";
 import { ThemeToggle } from "./theme-toggle";
 import { nextThemeLabel, useTheme } from "./theme-provider";
 import { ReadingProgress } from "./reading-progress";
+
+/**
+ * Las piezas salen del loader raiz, no de un modulo: incluyen lo que publico el
+ * orquestador, que vive en la base y no en el archivo del repositorio.
+ */
+const rootRoute = getRouteApi("__root__");
 
 type Overlay = "menu" | "search" | "subscribe" | null;
 
@@ -58,18 +64,20 @@ export function SiteHeader() {
     setOverlay(null);
   }, [pathname]);
 
+  const articles = rootRoute.useLoaderData();
+
   const hits = query.trim()
-    ? ARTICLES.filter((a) => {
+    ? articles.filter((a) => {
         const q = query.toLowerCase();
         return (
           a.title.toLowerCase().includes(q) ||
-          a.dek.toLowerCase().includes(q) ||
-          a.country.toLowerCase().includes(q) ||
-          a.rubric.toLowerCase().includes(q) ||
-          a.byline.toLowerCase().includes(q)
+          a.summary.toLowerCase().includes(q) ||
+          country(a).toLowerCase().includes(q) ||
+          rubric(a).toLowerCase().includes(q) ||
+          (a.author?.name ?? "").toLowerCase().includes(q)
         );
       })
-    : ARTICLES;
+    : articles;
 
   return (
     <header className="bg-bg">
@@ -233,17 +241,17 @@ export function SiteHeader() {
                 />
                 <ul className="mt-8 flex flex-col gap-8">
                   {hits.map((a) => (
-                    <li key={a.slug}>
+                    <li key={a.id}>
                       <StoryKicker article={a} />
                       <Link
                         to="/piezas/$slug"
-                        params={{ slug: a.slug }}
+                        params={{ slug: a.id }}
                         onClick={() => setOverlay(null)}
                         className="hed-mix hed-link mt-1 block"
                       >
                         {a.title}
                       </Link>
-                      <p className="byline mt-1">Por {a.byline}</p>
+                      <p className="byline mt-1">Por {a.author?.name}</p>
                     </li>
                   ))}
                   {hits.length === 0 ? (
