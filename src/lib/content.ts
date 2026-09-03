@@ -1,5 +1,6 @@
 import type { WiwoSiteArticle } from "@wiwo/contract";
 import { BANCO } from "./banco";
+import { TANDA2 } from "./banco-tanda2";
 
 export type SectionId =
   | "polis"
@@ -123,7 +124,11 @@ export const REGION_SPEND = [
   { region: "Otras", share: 36, electoral: 0.27 },
 ];
 
-export const ARTICLES = BANCO;
+export const ARTICLES = [
+  ...BANCO.filter((a) => a.featured),
+  ...TANDA2,
+  ...BANCO.filter((a) => !a.featured),
+];
 
 export type PromiseStatus = "cumplida" | "tramite" | "pendiente" | "abandonada";
 
