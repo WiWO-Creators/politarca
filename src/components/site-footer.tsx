@@ -7,7 +7,7 @@ export function SiteFooter() {
   const logo = theme === "dark" ? "/brand/logo-light.png" : "/brand/logo-dark.png";
 
   return (
-    <footer className="mt-8 border-t border-border bg-bg">
+    <footer className="mt-8 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
       <div className="page-wrap py-12 md:py-16">
         <img
           src={logo}

@@ -39,9 +39,9 @@ export function SectionPage({ id }: { id: SectionId }) {
       )}
 
       {rest.length ? (
-        <section className="page-wrap grid gap-8 pb-16 sm:grid-cols-2 md:gap-10 md:pb-20">
+        <section className="page-wrap grid grid-cols-1 gap-8 pb-16 md:grid-cols-2 md:gap-10 md:pb-20">
           {rest.map((a) => (
-            <StoryTease key={a.id} article={a} size="mix" />
+            <StoryTease key={a.id} article={a} size="split" />
           ))}
         </section>
       ) : null}

@@ -3,7 +3,7 @@ import { country, excerpt, rubric, type Article } from "@/lib/content";
 import { getGeo } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 
-type Size = "hero" | "lead" | "mix" | "list";
+type Size = "hero" | "lead" | "mix" | "list" | "split";
 
 export function StoryKicker({
   article,
@@ -34,6 +34,7 @@ export function StoryTease({
   const isHero = size === "hero";
   const isLead = size === "lead";
   const isList = size === "list";
+  const isSplit = size === "split";
 
   const geo = getGeo(article);
   const photoClass = isHero
@@ -46,12 +47,17 @@ export function StoryTease({
   const dekClass = isHero ? "dek-hero mt-3" : isLead ? "dek mt-2" : "dek-mix mt-2";
 
   return (
-    <article className={cn("flex flex-col", isHero && "w-full")}>
+    <article
+      className={cn(
+        isSplit ? "story-split" : "flex flex-col",
+        isHero && "w-full",
+      )}
+    >
       {isList ? null : (
         <Link
           to="/piezas/$slug"
           params={{ slug: article.id }}
-          className="block"
+          className="block min-w-0"
           tabIndex={-1}
         >
           <img
@@ -64,8 +70,8 @@ export function StoryTease({
           />
         </Link>
       )}
-      <div className={cn(isHero && "max-w-3xl")}>
-        <StoryKicker article={article} className={isList ? "mt-0" : "mt-3"} />
+      <div className={cn("min-w-0", isHero && "max-w-3xl")}>
+        <StoryKicker article={article} className={isList ? "mt-0" : isSplit ? "mt-0 md:mt-3" : "mt-3"} />
         <Hed className={hedClass}>
           <Link
             to="/piezas/$slug"
@@ -75,8 +81,10 @@ export function StoryTease({
             {article.title}
           </Link>
         </Hed>
-        <p className={dekClass}>{isHero ? article.summary : excerpt(article)}</p>
-        <p className="byline mt-2">Por {article.author?.name}</p>
+        <p className={cn(dekClass, isSplit && "hidden md:block")}>
+          {isHero ? article.summary : excerpt(article)}
+        </p>
+        <p className={cn("byline mt-2", isSplit && "hidden md:block")}>Por {article.author?.name}</p>
       </div>
     </article>
   );

@@ -36,6 +36,33 @@ function todayLabel(compact = false) {
   return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
 
+function SectionRail({ here }: { here: string }) {
+  const onPiezas = here === "/piezas" || here.startsWith("/piezas/");
+  return (
+    <nav aria-label="Secciones">
+      <ul className="page-wrap nav-rail">
+        {NAV.map((item) => (
+          <li key={item.to}>
+            <Link to={item.to} data-active={here === item.to ? "true" : "false"}>
+              {item.label}
+            </Link>
+          </li>
+        ))}
+        <li>
+          <Link to="/balance" data-active={here === "/balance" ? "true" : "false"}>
+            Balance
+          </Link>
+        </li>
+        <li>
+          <Link to="/piezas" data-active={onPiezas ? "true" : "false"}>
+            Archivo
+          </Link>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
 export function SiteHeader() {
   const { theme, cycle } = useTheme();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -102,17 +129,17 @@ export function SiteHeader() {
               </p>
             </>
           ) : (
-            <Link to="/" className="flex justify-center" onClick={() => setOverlay(null)}>
-              <img src={logo} alt="el politarca" className="h-6 w-auto md:h-7" />
+            <Link to="/" className="flex min-w-0 justify-center" onClick={() => setOverlay(null)}>
+              <img src={logo} alt="el politarca" className="h-5 w-auto md:h-7" />
             </Link>
           )}
 
-          <div className="flex items-center justify-end gap-0.5 md:gap-3">
+          <div className="flex items-center justify-end gap-0 md:gap-3">
             <ThemeToggle />
             <button
               type="button"
               onClick={() => setOverlay(overlay === "search" ? null : "search")}
-              className="util-link inline-flex size-11 items-center justify-center md:size-auto md:gap-1.5"
+              className="util-link hidden size-11 items-center justify-center md:inline-flex md:size-auto md:gap-1.5"
               aria-label="Buscar"
             >
               <Search className="size-4" strokeWidth={1.7} />
@@ -125,8 +152,13 @@ export function SiteHeader() {
             >
               Iniciar sesión
             </button>
-            <button type="button" onClick={() => setOverlay("subscribe")} className="pill text-[0.8rem] md:text-[0.875rem]">
-              Suscribirse
+            <button
+              type="button"
+              onClick={() => setOverlay("subscribe")}
+              className="pill px-3.5 text-[0.78rem] md:px-[0.95rem] md:text-[0.875rem]"
+            >
+              <span className="md:hidden">Suscribir</span>
+              <span className="hidden md:inline">Suscribirse</span>
             </button>
           </div>
         </div>
@@ -135,29 +167,20 @@ export function SiteHeader() {
 
       {isHome ? (
         <>
-          <div className="page-wrap py-4 md:py-5">
+          <div className="page-wrap py-3 md:py-5">
             <Link to="/" className="block" onClick={() => setOverlay(null)}>
               <img src={logo} alt="el politarca" className="masthead-logo" />
             </Link>
           </div>
-          <nav className="border-y border-border" aria-label="Secciones">
-            <ul className="page-wrap nav-rail">
-              {NAV.map((item) => (
-                <li key={item.to}>
-                  <Link to={item.to} data-active={here === item.to ? "true" : "false"}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link to="/balance" data-active={here === "/balance" ? "true" : "false"}>
-                  Balance
-                </Link>
-              </li>
-            </ul>
-          </nav>
+          <div className="border-y border-border">
+            <SectionRail here={here} />
+          </div>
         </>
-      ) : null}
+      ) : (
+        <div className="border-b border-border">
+          <SectionRail here={here} />
+        </div>
+      )}
 
       {overlay ? (
         <div className="overlay-sheet">
@@ -176,7 +199,7 @@ export function SiteHeader() {
               </Link>
               <div className="flex justify-end">
                 <button type="button" className="pill text-[0.8rem]" onClick={() => setOverlay("subscribe")}>
-                  Suscribirse
+                  Suscribir
                 </button>
               </div>
             </div>
@@ -211,6 +234,13 @@ export function SiteHeader() {
                     className="flex min-h-11 items-center hover:opacity-70"
                   >
                     Balance de Poder
+                  </Link>
+                  <Link
+                    to="/piezas"
+                    onClick={() => setOverlay(null)}
+                    className="flex min-h-11 items-center hover:opacity-70"
+                  >
+                    Archivo
                   </Link>
                   <button type="button" className="min-h-11 text-left hover:opacity-70" onClick={() => setOverlay("subscribe")}>
                     El Despacho

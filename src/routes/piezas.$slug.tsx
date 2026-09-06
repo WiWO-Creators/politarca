@@ -99,10 +99,10 @@ function ArticlePage() {
 
       <header className="reading-col pb-6 pt-2 md:pb-8 md:pt-8">
         <StoryKicker article={article} />
-        <h1 className="mt-3 font-display text-[1.85rem] font-semibold leading-[1.14] tracking-[-0.03em] text-fg md:text-[2.85rem] md:leading-[1.12]">
+        <h1 className="mt-3 font-display text-[1.65rem] font-semibold leading-[1.16] tracking-[-0.03em] text-fg sm:text-[1.85rem] md:text-[2.85rem] md:leading-[1.12]">
           {article.title}
         </h1>
-        <p className="dek mt-5 text-[1.1rem] leading-relaxed md:mt-6 md:text-[1.35rem]">{article.summary}</p>
+        <p className="dek mt-4 text-[1.05rem] leading-relaxed md:mt-6 md:text-[1.35rem]">{article.summary}</p>
         <p className="byline mt-5 md:mt-6">
           Por {article.author?.name}
           <span className="not-italic text-subtle">
@@ -166,9 +166,9 @@ function ArticlePage() {
         <section className="border-t border-border">
           <div className="page-wrap py-14">
             <h2 className="mix-title mb-8 md:mb-10">Más de Politarca</h2>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 md:gap-10">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 md:gap-10">
               {more.map((a) => (
-                <StoryTease key={a.id} article={a} size="mix" />
+                <StoryTease key={a.id} article={a} size="split" />
               ))}
             </div>
           </div>

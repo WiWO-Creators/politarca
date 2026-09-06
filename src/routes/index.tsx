@@ -37,7 +37,7 @@ function Home() {
       </section>
 
       <section className="page-wrap border-t border-border pb-2 pt-8 md:pb-6 md:pt-12">
-        <div className="grid gap-8 md:grid-cols-2 md:gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8 lg:gap-10">
           {pair.map((a) => (
             <StoryTease key={a.id} article={a} size="lead" heading="h2" />
           ))}
@@ -46,7 +46,7 @@ function Home() {
 
       <section className="page-wrap py-10 md:py-16">
         <h2 className="mix-title mb-8 md:mb-12">La mezcla de hoy</h2>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 xl:gap-7">
           {mix.map((a) => (
             <StoryTease key={a.id} article={a} size="mix" />
           ))}

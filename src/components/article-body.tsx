@@ -62,8 +62,8 @@ function Table({ block }: { block: WiwoBlock }) {
   const head = cadenas(block.head);
   const rows = Array.isArray(block.rows) ? block.rows.map(cadenas) : [];
   return (
-    <div className="my-8 overflow-x-auto">
-      <table className="w-full border-t border-border text-left font-body text-[0.95rem]">
+    <div className="table-scroll my-8">
+      <table className="w-full border-t border-border text-left font-body text-[0.88rem] md:text-[0.95rem]">
         <thead>
           <tr className="border-b border-border">
             {head.map((c) => (

@@ -29,9 +29,9 @@ function Archivo() {
         <p className="dek mt-4 max-w-2xl text-lg">
           Pocas, trabajadas. El largo se gana con reporteo, no con vueltas.
         </p>
-        <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-8 md:mt-12 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
           {articles.map((a) => (
-            <StoryTease key={a.id} article={a} />
+            <StoryTease key={a.id} article={a} size="split" />
           ))}
         </div>
       </div>

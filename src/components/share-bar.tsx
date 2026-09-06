@@ -46,10 +46,15 @@ export function ShareBar({
     }
   }
 
-  const btn = "inline-flex min-h-10 items-center gap-1.5 font-ui text-[0.72rem] uppercase tracking-[0.12em] text-subtle hover:text-fg";
+  const btn =
+    "inline-flex shrink-0 min-h-11 items-center gap-1.5 font-ui text-[0.72rem] uppercase tracking-[0.12em] text-subtle hover:text-fg";
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+    <div className="share-row">
+      <button type="button" className={btn} onClick={nativeShare}>
+        <Share2 className="size-3.5" />
+        Compartir
+      </button>
       <button type="button" className={btn} onClick={() => copy("link")}>
         {copied === "link" ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
         {copied === "link" ? "Copiado" : "Copiar"}
@@ -70,10 +75,6 @@ export function ShareBar({
       <a className={btn} href={grok} target="_blank" rel="noreferrer">
         Grok
       </a>
-      <button type="button" className={btn} onClick={nativeShare}>
-        <Share2 className="size-3.5" />
-        Compartir
-      </button>
     </div>
   );
 }
