@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createFileRoute, getRouteApi, Link, notFound } from "@tanstack/react-router";
 import { ArticleBody } from "@/components/article-body";
 import { Agora } from "@/components/agora";
@@ -16,6 +17,8 @@ import {
   sources,
 } from "@/lib/content";
 import { getArticleBySlug } from "@/lib/articles";
+import { medirNota } from "@/lib/analytics";
+import { dimensionesDeNota } from "@/lib/analytics-nota";
 import { getGeo } from "@/lib/geo";
 import { PLATE_CREDIT } from "@/lib/plates";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, pageHead } from "@/lib/seo";
@@ -64,6 +67,15 @@ export const Route = createFileRoute("/piezas/$slug")({
 
 function ArticlePage() {
   const { article } = Route.useLoaderData();
+
+  // La lectura de la pieza, aparte de la vista de página que ya mandó
+  // MedicionDeVistas. Depende del id y no del objeto, para no medirla dos veces
+  // si el loader vuelve a correr sobre la misma pieza.
+  useEffect(() => {
+    medirNota(dimensionesDeNota(article));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [article.id]);
+
   const more = otherArticles(rootRoute.useLoaderData(), article.id).slice(0, 3);
   const section = getSection(article.section?.id);
   const geo = getGeo(article);

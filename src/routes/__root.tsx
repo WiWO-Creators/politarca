@@ -1,6 +1,8 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
+import { MedicionDeVistas } from "@/components/medicion-de-vistas";
+import { scriptsDeAnalitica } from "@/lib/analytics";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -41,6 +43,8 @@ export const Route = createRootRoute({
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
       { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
     ],
+    // Google Analytics. Sin VITE_GA_MEASUREMENT_ID no se emite nada.
+    scripts: scriptsDeAnalitica(),
   }),
   component: RootDocument,
 });
@@ -53,6 +57,8 @@ function RootDocument() {
       </head>
       <body className="min-h-dvh bg-bg text-fg">
         <PreviewHostBridge />
+        {/* Una vista por cambio de ruta: el sitio no recarga nunca. */}
+        <MedicionDeVistas />
         <AuthProvider>
           <ThemeProvider>
             <SiteHeader />
